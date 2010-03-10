@@ -13,7 +13,7 @@
 
 \usage{
 forward(X, Y, criterion="gcv", df=1.5, Kmin=1, Kmax=10000, smoother="k", kernel="g",
- control.par=list(), cv.options=list())}
+ control.par=list(), cv.options=list(),varcrit=criterion)}
 
 \arguments{
   \item{X}{A numeric matrix of explanatory variables, with \emph{n} rows
@@ -123,7 +123,12 @@ forward(X, Y, criterion="gcv", df=1.5, Kmin=1, Kmax=10000, smoother="k", kernel=
   memory. \code{npermut} is the number of random draws.   If
   \code{cv.options} is \code{list()}, then component \code{ntest} is set to
   \code{floor(nrow(x)/10)}, \code{type} is random, \code{npermut} is 20
-  and \code{method} is \code{"inmemory"}, and the other components are \code{NULL}}
+  and \code{method} is \code{"inmemory"}, and the other components are
+  \code{NULL}}
+\item{varcrit}{Character string. Criterion used for variable
+  selection. The criteria available are GCV,
+  AIC (\code{"aic"}), corrected AIC  (\code{"aicc"}),   BIC
+  (\code{"bic"}) and gMDL  (\code{"gmdl"}).}
 }
 
 \value{ Returns an object of class \code{forwardibr} which is a matrix
