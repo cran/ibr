@@ -26,11 +26,11 @@ ibr <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=10000,smoother="k",kernel
   if (criterion%in%c("rmse","map")) {
     cv <- list(bwchange=FALSE,ntest=floor(nrow(x)/10),ntrain=NULL,Kfold=FALSE,type="random",seed=NULL,npermut=20)
     cv[(names(cv.options))] <- cv.options
-    if (!all(sapply(cv[c(1,4)],is.logical))) stop("invalid cv$bwchange or cv$Kfold: must be logical\n")
+    if (!all(sapply(cv[1],is.logical))) stop("invalid cv$bwchange or cv$Kfold: must be logical\n")
     if (!all(sapply(cv[c(2,3,6,8)], FUN=function(x) is.numeric(x)||is.null(x)))) stop("invalid cv parameters: must be numeric or NULL\n")
     if (any(names(cv.options)=="ntrain")) cv$ntest <- NULL
   } else cv <- NULL
-  if ((n>500)&(! contr.sp$really.big)) stop("number of observations is greater than 500, set contr.sp$really.big to TRUE to you do want to do calculations (but computation time -eigen decomposition- could be prohibitive)\n")
+  if ((n>500)&(! contr.sp$really.big)) stop("number of observations is greater than 500, set control.par$really.big to TRUE to you do want to do calculations (but computation time -eigen decomposition- could be prohibitive)\n")
   if (smoother=="k") {
     m <- NULL
     if (!is.null(contr.sp$bandwidth)) {
