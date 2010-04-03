@@ -9,7 +9,7 @@ lambdachoice <- function(X,ddlobjectif,m=2,itermax) {
   F2 <- qr.Q(qrSgu,complete=TRUE)[,-(1:ncol(Sgu))]
   Kgu <- Rad.cov(X,X,p=p)
   ainv <- t(F2)%*%Kgu%*%F2
-  vp <- eigen(ainv,only.values=TRUE)$values
+  vp <- eigen(ainv,only.values=TRUE,symmetric=TRUE)$values
   trace <- function(loglambda,vp1=vp) {
     n-sum(1/(vp1/exp(loglambda)+1)) - ddlobjectif
   }
