@@ -1,4 +1,4 @@
-print.ibr <- function(x, digits = max(3, getOption("digits") - 3), ...) {
-  cat("\nInitial df:", format(round(x$initialdf,2)), "; Final df:", format(round(x$finaldf,2)), "\n")
+print.ibr <- function(x, digits = max(2, getOption("digits") - 4), ...) {
+  cat("\nInitial df:", format(round(x$initialdf,digits)), "; Final df:", format(round(x$finaldf,digits)), "\n")
   cat("Number of iterations:", x$iter, "chosen by", x$call$criterion, "\n")
 }

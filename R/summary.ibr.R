@@ -22,11 +22,11 @@ summary.ibr <- function(object, criteria="call", ...) {
     Sbul <-   n*sigma2/(n-object$finaldf)
   anscrit <- c(anscrit,log(Sbul)+object$finaldf/n*log((sum(y^2)-n*sigma2)/(object$finaldf*Sbul)))
   }
-  if (criteria!="user") {
+  if ((criteria!="user")&(!is.null(anscrit))) {
   names(anscrit) <- criteria
 } else {
-  anscrit <- "---"
-  names(anscrit) <- "user"
+  anscrit <- "No Informative Criterion"
+  names(anscrit) <- criteria
 }
   ans <- list(residuals=r,Std.Error=stderr,Initial.Df=object$initialdf,
               Final.Df=object$finaldf,Resid.Df=n-object$finaldf,criteria=anscrit,

@@ -10,10 +10,14 @@
 }
 
 \usage{
-\method{plot}{forwardibr}(x,\ldots )} 
+\method{plot}{forwardibr}(x,global=FALSE,\ldots )} 
 
 \arguments{
   \item{x}{Object of class \code{\link{forwardibr}}.}
+  \item{global}{Boolean: if \code{global} is \code{TRUE} the color code
+  is between the min and the max of \code{x} (except infinite value); if
+  \code{global} is \code{FALSE} the color code is between the min and
+  the max of each row.}
   \item{\dots}{further arguments passed to \code{\link{image}}.}
 }
 
