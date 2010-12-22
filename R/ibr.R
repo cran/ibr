@@ -1,4 +1,4 @@
-ibr <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=10000,smoother="k",kernel="g",control.par=list(),cv.options=list()) {
+ibr <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=100000,smoother="k",kernel="g",control.par=list(),cv.options=list()) {
   crit <-c("aic","aicc","gcv","bic","gmdl","rmse","map")
   criterion <- match.arg(criterion,crit)
   smoothertable <- c("k","tps")

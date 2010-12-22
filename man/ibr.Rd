@@ -15,7 +15,7 @@ Missing values are not allowed.
 }
 
 \usage{
-ibr(x, y, criterion="gcv", df=1.5, Kmin=1, Kmax=10000, smoother="k",
+ibr(x, y, criterion="gcv", df=1.5, Kmin=1, Kmax=1e+05, smoother="k",
  kernel="g", control.par=list(), cv.options=list())}
 
 \arguments{
@@ -135,6 +135,7 @@ ibr(x, y, criterion="gcv", df=1.5, Kmin=1, Kmax=10000, smoother="k",
 Returns an object of class \code{ibr} which is a list including:
   \item{beta}{Vector of coefficients.}
   \item{residuals}{Vector of residuals.}
+  \item{fitted}{Vector of fitted values.}
   \item{iter}{The number of iterations used.}
   \item{initialdf}{The initial effective degree of freedom of the pilot (or base) smoother.}
   \item{finaldf}{The effective degree of freedom of the iterated bias reduction

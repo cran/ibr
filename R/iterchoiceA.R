@@ -12,7 +12,7 @@ iterchoiceA <- function(n,mini,maxi,eigenvaluesA,tPADmdemiY,DdemiPA,ddlmini,ddlm
         break 
       }
       dep <- dep-1
-      if (dep==1) stop(paste("decrease Kmax below",fraction[2]))
+      if (dep==1) stop(paste("decrease Kmax below",fraction[2],"or increase dfmaxi component of control.par list"))
     }
     phi <- (sqrt(5) - 1)/2
     repeat {
@@ -40,7 +40,7 @@ iterchoiceA <- function(n,mini,maxi,eigenvaluesA,tPADmdemiY,DdemiPA,ddlmini,ddlm
         break 
       }
       dep <- dep-1
-      if (dep==1) stop(paste("decrease Kmax below",fraction[2]))
+      if (dep==1) stop(paste("decrease Kmax below",fraction[2],"or increase dfmaxi component of control.par list"))
     }
     phi <- (sqrt(5) - 1)/2
     repeat {

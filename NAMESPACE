@@ -3,10 +3,12 @@ useDynLib(ibr)
 #importFrom("fields",fields.mkpoly)
 #importFrom("fields",Rad.cov)
 
-export(betaA,betaS1,BIC.ibr,GCV.ibr,AICc.ibr,bwchoice,calcA,cvobs,departnoyau,fittedA,fittedS1,forward,ibr,iterchoiceAcve,iterchoiceAcv,iterchoiceAe,iterchoiceA,iterchoiceS1cve,iterchoiceS1cv,iterchoiceS1e,iterchoiceS1,kernelSx,lambdachoice,plot.forwardibr,plot.ibr,poids,predict.ibr,print.summary.ibr,summary.ibr,sumvalpr,tpssmoother,tpsSx,tracekernel,epane,gaussien,quartic,uniform,critAgcv,critAaic,critAaicc,critAgmdl,critAbic,critS1gcv,critS1aic,critS1aicc,critS1gmdl,critS1bic)
+export(betaA,betaS1,BIC.ibr,GCV.ibr,AICc.ibr,bwchoice,calcA,cvobs,departnoyau,fittedA,fittedS1,forward,ibr,iterchoiceAcve,iterchoiceAcv,iterchoiceAe,iterchoiceA,iterchoiceS1cve,iterchoiceS1cv,iterchoiceS1e,iterchoiceS1,kernelSx,lambdachoice,plot.forwardibr,plot.ibr,poids,predict.ibr,print.summary.ibr,summary.ibr,sumvalpr,tpssmoother,tpsSx,tracekernel,epane,gaussien,quartic,uniform,critAgcv,critAaic,critAaicc,critAgmdl,critAbic,critS1gcv,critS1aic,critS1aicc,critS1gmdl,critS1bic,npregression,predict.npregression,print.summary.npregression,summary.npregression)
 
 S3method(print,ibr)
 S3method(summary,ibr)
+S3method(print,npregression)
+S3method(summary,npregression)
 S3method(plot,ibr)
 S3method(plot,forwardibr)
 S3method(print,summary.ibr)
