@@ -27,6 +27,7 @@ npregression <- function(x,y,criterion="rmse",bandwidth=NULL,kernel="g",control.
   if (contr.sp$degree==0) nom <- "reg" else nom <- "regpol"
   crit <-c("rmse","map")
   criterion <- match.arg(criterion,crit)
+  n <- length(x)
   if ((criterion%in%c("rmse","map"))&(is.null(bandwidth))) {
     mini <- 1/n
     kmax=floor(log(n*diff(range(x))/3)/log(1+1/n))
@@ -36,8 +37,6 @@ npregression <- function(x,y,criterion="rmse",bandwidth=NULL,kernel="g",control.
     if ((!is.numeric(cv$gridbw))||(!is.vector(cv$gridbw))) stop("invalid gridbw component of cv.options: must be a numeric vector\n")
     if (!all(sapply(cv[c(2,3,6,8)], FUN=function(x) is.numeric(x)||is.null(x)))) stop("invalid cv parameters: must be numeric or NULL\n")
     if (any(names(cv.options)=="ntrain")) cv$ntest <- NULL
-    ## recherche fenetre ici
-    n <- length(x)
     sel <- cvobs(n,cv$ntest,cv$ntrain,cv$Kfold,cv$type,cv$npermut,cv$seed)
     ordre <- unlist(sel)
     xord <- x[ordre]
