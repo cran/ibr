@@ -3,7 +3,15 @@ useDynLib(ibr)
 #importFrom("fields",fields.mkpoly)
 #importFrom("fields",Rad.cov)
 
-export(betaA,betaS1,BIC.ibr,GCV.ibr,AICc.ibr,bwchoice,calcA,cvobs,departnoyau,fittedA,fittedS1,forward,ibr,iterchoiceAcve,iterchoiceAcv,iterchoiceAe,iterchoiceA,iterchoiceS1cve,iterchoiceS1cv,iterchoiceS1e,iterchoiceS1,kernelSx,lambdachoice,plot.forwardibr,plot.ibr,poids,predict.ibr,print.summary.ibr,summary.ibr,sumvalpr,tpssmoother,tpsSx,tracekernel,epane,gaussien,quartic,uniform,critAgcv,critAaic,critAaicc,critAgmdl,critAbic,critS1gcv,critS1aic,critS1aicc,critS1gmdl,critS1bic,npregression,predict.npregression,print.summary.npregression,summary.npregression)
+
+export(betaA,betaS1,GCV.ibr,AICc.ibr,bwchoice,calcA,cvobs,departnoyau,fittedA,fittedS1,forward,ibr,iterchoiceAcve,iterchoiceAcv,iterchoiceAe,iterchoiceA,iterchoiceS1cve,iterchoiceS1cv,iterchoiceS1e,iterchoiceS1,kernelSx,lambdachoice,plot.forwardibr,plot.ibr,poids,predict.ibr,print.summary.ibr,summary.ibr,sumvalpr,tpssmoother,tpsSx,tracekernel,epane,gaussien,quartic,uniform,critAgcv,critAaic,critAaicc,critAgmdl,critAbic,critS1gcv,critS1aic,critS1aicc,critS1gmdl,critS1bic,npregression,predict.npregression,print.summary.npregression,summary.npregression)
+
+if (!exists("BIC", envir=asNamespace("stats"))) {
+     importFrom(nlme, BIC)
+} else {
+     importFrom(stats, BIC)
+     S3method(BIC,ibr)
+}
 
 S3method(print,ibr)
 S3method(summary,ibr)
