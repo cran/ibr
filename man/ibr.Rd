@@ -7,15 +7,13 @@
 \title{Iterative bias reduction smoothing}
 
 \description{
-  Performs iterative bias reduction using kernel or thin plate
-  splines. In the latter case, the order \emph{m} is chosen as the first integer
-  such that 2\emph{m}/\emph{d}>1, where \emph{d} is the number of explanatory variables.
-  \cr
+  Performs iterative bias reduction using kernel, thin plate
+  splines or Duchon splines. 
 Missing values are not allowed.
 }
 
 \usage{
-ibr(x, y, criterion="gcv", df=1.5, Kmin=1, Kmax=1e+05, smoother="k",
+ibr(x, y, criterion="gcv", df=1.5, Kmin=1, Kmax=1e+06, smoother="k",
  kernel="g", control.par=list(), cv.options=list())}
 
 \arguments{
@@ -34,8 +32,8 @@ ibr(x, y, criterion="gcv", df=1.5, Kmin=1, Kmax=1e+05, smoother="k",
   the  desired effective degree of
   freedom (trace) of the smoothing   matrix for
   each variable or for the initial smoother (see \code{contr.sp$dftotal}); \code{df} is repeated when the length of vector
-  \code{df} is 1. If \code{smoother="tps"}, the minimum df of thin
-  plate splines is multiplied by \code{df}. This argument is useless if
+  \code{df} is 1. If \code{smoother="tps"} or  \code{smoother="ds"}, the
+  minimum df of splines is multiplied by \code{df}. This argument is useless if
   \code{bandwidth} is supplied (non null).}
 \item{Kmin}{The minimum number of bias correction  iterations of the
   search grid considered by
@@ -44,7 +42,8 @@ ibr(x, y, criterion="gcv", df=1.5, Kmin=1, Kmax=1e+05, smoother="k",
   search grid considered by
   the model selection procedure for selecting the optimal number of iterations.}
 \item{smoother}{Character string which allows to choose between thin plate
-  splines \code{"tps"} or kernel (\code{"k"}). }
+  splines \code{"tps"}, Duchon
+  splines \code{"tps"} (see Duchon, 1977) or kernel (\code{"k"}). }
 \item{kernel}{Character string which allows to choose between gaussian kernel
   (\code{"g"}), Epanechnikov (\code{"e"}), uniform (\code{"u"}),
   quartic (\code{"q"}). The default (gaussian kernel) is strongly advised.}
@@ -53,10 +52,11 @@ ibr(x, y, criterion="gcv", df=1.5, Kmin=1, Kmax=1e+05, smoother="k",
   components are \code{bandwidth} (default to NULL), \code{iter}
   (default to NULL), \code{really.big} (default to \code{FALSE}),
   \code{dftobwitmax} (default to 1000), \code{exhaustive} (default to
-  \code{FALSE}),\code{m} (default to NULL), \code{dftotal} (default to
-  \code{FALSE}), \code{accuracy} (default to 0.01), \code{ddlmaxi}
-  (default to 2n/3) and \code{fraction} (default to \code{c(100, 200,
-  500, 1000, 5000, 10^4, 5e+04, 1e+05, 5e+05, 1e+06)}).
+  \code{FALSE}),\code{m} (default to NULL), ,\code{s} (default to NULL),
+  \code{dftotal} (default to \code{FALSE}), \code{accuracy} (default to
+  0.01), \code{ddlmaxi} (default to 2n/3) and \code{fraction} (default
+  to \code{c(100, 200, 500, 1000, 5000, 10^4, 5e+04, 1e+05, 5e+05,
+  1e+06)}).
 
   \code{bandwidth}: a vector of either length 1 or length equal to the
     number of columns of \code{x}. If \code{smoother="k"},
@@ -68,7 +68,7 @@ ibr(x, y, criterion="gcv", df=1.5, Kmin=1, Kmax=1e+05, smoother="k",
   bandwidth for each variable is
   chosen such that each univariate kernel
   smoother (for each explanatory variable) has \code{df} effective degrees of
-  freedom and for \code{smoother="tps"} that lambda is chosen such that
+  freedom and for \code{smoother="tps"} or \code{smoother="ds"} that lambda is chosen such that
   the df of the smoothing matrix is \code{df} times the minimum df.
 
   \code{iter}: the number of iterations. If null or missing, an optimal number of
@@ -89,12 +89,24 @@ ibr(x, y, criterion="gcv", df=1.5, Kmin=1, Kmax=1e+05, smoother="k",
   criterion is searched using \code{\link{optimize}} between \code{Kmin}
   and \code{Kmax}.
   
-  \code{m}: the order of thin plate splines. This integer \emph{m} must verifies
+  \code{m}: The order of derivatives for the penalty (for thin plate
+  splines it is the order). This integer \emph{m} must verify
+  2\emph{m}+2\emph{s}/\emph{d}>1, where \emph{d} is the number of
+  explanatory variables. The default (for \code{smoother="tps"}) is to
+  choose the order \emph{m} as the first integer such that
   2\emph{m}/\emph{d}>1, where \emph{d} is the number of explanatory
-  variables.  The missing default to choose the order \emph{m} as the first integer
-  such that 2\emph{m}/\emph{d}>1, where \emph{d} is the number of
-  explanatory variables (same for \code{NULL}). 
-  
+  variables. The default (for \code{smoother="ds"}) is to choose
+  \emph{m}=2 (p
+  seudo cubic splines).
+
+    \code{s}: the power of weighting function. For thin plate splines
+  \emph{s} is equal to 0. This real must be strictly smaller than \emph{d}/2
+  (where \emph{d} is the number of explanatory  variables) and must
+  verify 2\emph{m}+2\emph{s}/\emph{d}. To get pseudo-cubic splines (the default),
+  choose \emph{m}=2 and \emph{s}=(\emph{d}-1)/2 (See Duchon, 1977).the order of thin plate splines. This integer \emph{m} must verifies
+  2\emph{m}/\emph{d}>1, where \emph{d} is the number of explanatory
+  variables. 
+
   \code{dftotal}: a boolean wich indicates when \code{FAlSE} that the
   argument \code{df} is the objective df for each univariate kernel (the
   default) calculated for each explanatory variable or for the overall
@@ -108,6 +120,9 @@ ibr(x, y, criterion="gcv", df=1.5, Kmin=1, Kmax=1e+05, smoother="k",
   
   \code{fraction}: the subdivision of interval \code{Kmin},\code{Kmax}
   if non exhaustive search is performed (see also \code{\link{iterchoiceA}} or \code{\link{iterchoiceS1}}). 
+
+  \code{scale}: boolean. If \code{TRUE} \code{x} is scaled (using
+  \code{\link{scale}}); default to \code{FALSE}. 
 }
 
    \item{cv.options}{A named list which controls the way to do cross
@@ -141,12 +156,16 @@ Returns an object of class \code{ibr} which is a list including:
   \item{finaldf}{The effective degree of freedom of the iterated bias reduction
     smoother at the \code{iter} iterations.}
   \item{bandwidth}{Vector of bandwith for each explanatory variable}
-  \item{call}{A list containing four components: \code{x} contains the
-    initial explanatory variables, \code{y} contains the
+  \item{call}{A list containing several components: \code{x} contains the
+    initial explanatory variables (scaled if relevant), \code{y} contains the
     initial dependant variables, 
     \code{criterion} contains the chosen criterion, \code{kernel} the
     kernel, \code{p} the number of explanatory variables and \code{m}
-    the order of the splines (if relevant).}
+    the order of the splines (if relevant), \code{s}
+    the power of weights, \code{scaled} boolean which is \code{TRUE}
+    when explanatory variables are scaled, \code{mean} mean of explanatory
+    variables if \code{scaled=TRUE}, \code{sd} standard deviation of
+    explanatory variables if \code{scaled=TRUE}.}
   \item{criteria}{either a list containing all the criteria evaluated on the
     grid \code{Kmin:Kmax} (along with the effective degree of freedom of the
     smoother and the sigma squared on this grid) if an exhaustive search is chosen (see the

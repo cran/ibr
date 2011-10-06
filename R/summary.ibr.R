@@ -1,6 +1,6 @@
 summary.ibr <- function(object, criteria="call", ...) {
   r <- object$residuals
-  x <- object$call$x
+  colnamesx <- colnames(object$call$x)
   y <- object$call$y
   n <- length(r)
   stderr <- sqrt(sum(r^2)/(n-object$finaldf))
@@ -31,12 +31,12 @@ summary.ibr <- function(object, criteria="call", ...) {
   ans <- list(residuals=r,Std.Error=stderr,Initial.Df=object$initialdf,
               Final.Df=object$finaldf,Resid.Df=n-object$finaldf,criteria=anscrit,
               kernel=object$call$kernel, iter=object$iter,crit4iter=object$call$criterion,
-              bandwidth=object$bandwidth, smoother=object$call$smoother,m=object$call$m)
+              bandwidth=object$bandwidth, smoother=object$call$smoother,m=object$call$m,s=object$call$s)
   if (object$call$smoother=="k") {
-    if (is.null(colnames(x))) {
+    if (is.null(colnamesx)) {
       names(ans$bandwidth) <- paste("X",1:object$call$p,sep="")
     } else {
-      names(ans$bandwidth) <- paste(colnames(x),1:object$call$p,sep="")
+      names(ans$bandwidth) <- paste(colnamesx,1:object$call$p,sep="")
     }
   }
   class(ans) <- "summary.ibr"
