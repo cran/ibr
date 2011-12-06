@@ -1,4 +1,4 @@
-iterchoiceS1cve <- function(X,y,lambda,df,ddlmini,ntest,ntrain,Kfold,type,npermut,seed,Kmin,Kmax,m) {
+iterchoiceS1cve <- function(X,y,lambda,df,ddlmini,ntest,ntrain,Kfold,type,npermut,seed,Kmin,Kmax,m,s) {
   iter <- 1
   MSE <- MAP <- rep(.Machine$double.xmax,length(Kmax-Kmin+1))
   n <- nrow(X)
@@ -15,10 +15,10 @@ iterchoiceS1cve <- function(X,y,lambda,df,ddlmini,ntest,ntrain,Kfold,type,npermu
       YA <- y[-sel[[j]]]
     }  
     if (is.null(lambda)&(!is.null(df))) {
-      lambdalist[[j]] <- lambdachoice(XA,ddlmini*df,m=m,itermax=100)
+      lambdalist[[j]] <- lambdachoice(XA,ddlmini*df,m=m,s=s,itermax=100)
     } else lambdalist[[j]] <- lambda
     nj[j] <- length(YA)
-    S1[[j]] <- tpssmoother(XA, YA,lambda=lambdalist[[j]],m=m) 
+    S1[[j]] <- dssmoother(XA, YA,lambda=lambdalist[[j]],m=m,s=s) 
     vp1.S1 <- eigen(S1[[j]]$H,symmetric=TRUE)
     U[[j]] <- vp1.S1$vect
     tUy[[j]] <- as.vector(crossprod(U[[j]], YA))
@@ -31,7 +31,7 @@ iterchoiceS1cve <- function(X,y,lambda,df,ddlmini,ntest,ntrain,Kfold,type,npermu
     ainv <- t(F2)%*%S1[[j]]$Qgu%*%F2
     diag(ainv) <- diag(ainv)+lambdalist[[j]]
     Sp[[j]] <- -lambda*F2%*%(solve(ainv))%*%t(F2)
-    SSx[[j]] <- tpsSx(X=XA,X[sel[[j]],,drop=FALSE],lambdalist[[j]],m)
+    SSx[[j]] <- dsSx(X=XA,X[sel[[j]],,drop=FALSE],m,s)
     preprod[[j]] <- solve(qr.R(qrSgu))%*%(t(qr.Q(qrSgu)))
   }
   if (Kmin>1) {

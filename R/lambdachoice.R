@@ -1,13 +1,13 @@
-lambdachoice <- function(X,ddlobjectif,m=2,itermax) {
+lambdachoice <- function(X,ddlobjectif,m=2,s=0,itermax,smoother="tps") {
   n <- nrow(X)
   d <- ncol(X)
   p <- 2*m-d
   ddlmin <- choose(m+d-1,m-1)
   if (ddlobjectif<=ddlmin) stop(paste("the objective df is too small, choose it greater than",ddlmin))
-  Sgu <-  fields.mkpoly(X, m = m)
+  Sgu <- DuchonS(X,m)
   qrSgu <- qr(Sgu)
   F2 <- qr.Q(qrSgu,complete=TRUE)[,-(1:ncol(Sgu))]
-  Kgu <- Rad.cov(X,X,p=p)
+  Kgu <- DuchonQ(X,0,m,s,symmetric=TRUE)
   ainv <- t(F2)%*%Kgu%*%F2
   vp <- eigen(ainv,only.values=TRUE,symmetric=TRUE)$values
   trace <- function(loglambda,vp1=vp) {

@@ -1,6 +1,6 @@
-\name{tpsSx}
+\name{dsSx}
 
-\alias{tpsSx}
+\alias{dsSx}
 
 \title{Evaluate the smoothing matrix at any point}
 
@@ -9,15 +9,22 @@
 }
 
 \usage{
-tpsSx(X,Xetoile,lambda,m=2)
+dsSx(X,Xetoile,m=2,s=0)
 }
 
 \arguments{
   \item{X}{Matrix of explanatory variables, size n,p.}
   \item{Xetoile}{Matrix of new observations with the same number of
     variables as \eqn{X}, size m,p.}
- \item{lambda}{Coefficient lambda that control smoothness.}
- \item{m}{Order of thin plate splines.}
+  \item{m}{The order of derivatives for the penalty (for thin plate
+  splines it is the order). This integer \emph{m} must verify
+  2\emph{m}+2\emph{s}/\emph{d}>1, where \emph{d} is the number of explanatory
+  variables.} 
+  \item{s}{The power of weighting function. For thin plate splines
+  \emph{s} is equal to 0. This real must be strictly smaller than \emph{d}/2
+  (where \emph{d} is the number of explanatory  variables) and must
+  verify 2\emph{m}+2\emph{s}/\emph{d}. To get pseudo-cubic splines,
+  choose \emph{m}=2 and \emph{s}=(\emph{d}-1)/2 (See Duchon, 1977).} 
  }
 \details{see the reference for detailed explanation of \emph{Q} (the
   semi kernel) and
@@ -25,7 +32,13 @@ tpsSx(X,Xetoile,lambda,m=2)
   \pkg{fields}.}
  
 \references{
-C. Gu (2002) \emph{Smoothing spline anova models}. New York: Springer-Verlag.}
+Duchon, J. (1977) Splines minimizing rotation-invariant semi-norms in
+Solobev spaces. in W. Shemp and K. Zeller (eds) \emph{Construction theory of
+  functions of several variables}, 85-100, Springer, Berlin.
+
+C. Gu (2002) \emph{Smoothing spline anova models}. New York:
+Springer-Verlag.
+}
  
 \value{
 Returns a list containing two matrices denoted \code{Sgu} (for null

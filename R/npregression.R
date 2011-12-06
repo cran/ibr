@@ -64,7 +64,7 @@ npregression <- function(x,y,criterion="rmse",bandwidth=NULL,kernel="g",control.
   df <- prov[[8]]
   residuals <- y- fit
   
-  res <- list(bandwidth=bandwidth,residuals=residuals,fitted=fit,df=df,call=list(x=x,y=y,criterion=criterion,kernel=kernel,degree=contr.sp$degree),criteria=choixbw)
+  res <- list(bandwidth=bandwidth,residuals=residuals,fitted=fit,df=df,call=list(y=y,criterion=criterion,kernel=kernel,degree=contr.sp$degree),criteria=choixbw)
   class(res) <- c("npregression", "list")
   return(res)
 }

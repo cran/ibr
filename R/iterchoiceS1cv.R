@@ -1,4 +1,4 @@
-iterchoiceS1cv <- function(X,y,lambda,df,ddlmini,ntest,ntrain,Kfold,type,npermut,seed,Kmin,Kmax,criterion,m,fraction) {
+iterchoiceS1cv <- function(X,y,lambda,df,ddlmini,ntest,ntrain,Kfold,type,npermut,seed,Kmin,Kmax,criterion,m,s,fraction) {
   choixssecv2 <- function(k,sel,y,lambdalist,U,S1,valpr,SSx,tUy,Sp,ddlmin,index0) {
     sse <- 0
     for (j in 1:length(sel)) {
@@ -52,9 +52,9 @@ iterchoiceS1cv <- function(X,y,lambda,df,ddlmini,ntest,ntrain,Kfold,type,npermut
       YA <- y[-sel[[j]]]
     }  
     if (is.null(lambda)&(!is.null(df))) {
-      lambdalist[[j]] <- lambdachoice(XA,ddlmini*df,m=m,itermax=100)
+      lambdalist[[j]] <- lambdachoice(XA,ddlmini*df,m=m,s=s,itermax=100)
     } else lambdalist[[j]] <- lambda
-    S1[[j]] <- tpssmoother(XA, YA,lambda=lambdalist[[j]],m=m) 
+    S1[[j]] <- dssmoother(XA, YA,lambda=lambdalist[[j]],m=m,s=s) 
     vp1.S1 <- eigen(S1[[j]]$H,symmetric=TRUE)
     U[[j]] <- vp1.S1$vect
     tUy[[j]] <- as.vector(crossprod(U[[j]], YA))
@@ -70,7 +70,7 @@ iterchoiceS1cv <- function(X,y,lambda,df,ddlmini,ntest,ntrain,Kfold,type,npermut
     ainv <- t(F2)%*%S1[[j]]$Qgu%*%F2
     diag(ainv) <- diag(ainv)+lambdalist[[j]]
     Sp[[j]] <- -lambda*F2%*%(solve(ainv))%*%t(F2)
-    SSx[[j]] <- tpsSx(X=XA,X[sel[[j]],,drop=FALSE],lambdalist[[j]],m)
+    SSx[[j]] <- dsSx(X=XA,X[sel[[j]],,drop=FALSE],m,s)
     preprod[[j]] <- solve(qr.R(qrSgu))%*%(t(qr.Q(qrSgu)))
   }
   if (criterion=="rmse") {

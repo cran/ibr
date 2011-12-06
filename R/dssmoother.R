@@ -1,11 +1,10 @@
-tpssmoother <- function(X,Y=NULL,lambda,m=2) {
+dssmoother <- function(X,Y=NULL,lambda,m,s) {
   n <- nrow(X)
   d <- ncol(X)
-  p <- 2*m-d
-  Sgu <-  fields.mkpoly(X, m = m)
+  Sgu <-  DuchonS(X,m)
   qrSgu <- qr(Sgu)
   F2 <- qr.Q(qrSgu,complete=TRUE)[,-(1:ncol(Sgu))]
-  Qgu <- Rad.cov(X,X,p=p)
+  Qgu <- DuchonQ(X,0,m,s,symmetric=TRUE)
   ainv <- t(F2)%*%Qgu%*%F2
   diag(ainv) <- diag(ainv)+lambda
   Sp <- -lambda*F2%*%(solve(ainv))%*%t(F2)

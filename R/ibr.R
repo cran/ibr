@@ -1,7 +1,7 @@
-ibr <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=100000,smoother="k",kernel="g",control.par=list(),cv.options=list()) {
+ibr <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",kernel="g",control.par=list(),cv.options=list()) {
   crit <-c("aic","aicc","gcv","bic","gmdl","rmse","map")
   criterion <- match.arg(criterion,crit)
-  smoothertable <- c("k","tps")
+  smoothertable <- c("k","tps","ds")
   smoother <- match.arg(smoother,smoothertable)
   if (!is.matrix(x)) {
     x <- data.matrix(x)
@@ -10,19 +10,56 @@ ibr <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=100000,smoother="k",kerne
   n <- nrow(x)
   p <- ncol(x)
   if (length(y)!=n) stop("numbers of observations in x and y do not match\n")
-  contr.sp <- list(bandwidth=NULL,iter=NULL,really.big=FALSE,dftobwitmax=1000,exhaustive=FALSE,m=NULL,dftotal=FALSE,accuracy=0.01,dfmaxi=2*n/3,fraction=c(100, 200, 500, 1000, 5000,10^4,5e+04,1e+05,5e+05,1e+06))
+  contr.sp <- list(bandwidth=NULL,iter=NULL,really.big=FALSE,dftobwitmax=1000,exhaustive=FALSE,m=NULL,s=NULL,dftotal=FALSE,accuracy=0.01,dfmaxi=2*n/3,fraction=c(100, 200, 500, 1000, 5000,10^4,5e+04,1e+05,5e+05,1e+06),scale=FALSE)
   contr.sp[(names(control.par))] <- control.par
   if (!(is.logical(contr.sp$dftotal))) stop("contr.sp$dftotal must be logical\n")
-  if (is.null(contr.sp$m)) contr.sp$m <- floor(p/2)+1 else {
-    if (contr.sp$m<=(p/2)) stop("order of thin plate splines is invalid\n")
-  }
   if ((!is.null(contr.sp$bandwidth))&(!is.numeric(contr.sp$bandwidth) || (contr.sp$bandwidth<0))) stop("invalid bandwidth\n")
   if ((!is.null(contr.sp$iter))&(!is.numeric(contr.sp$iter) || (contr.sp$iter<0) || (floor(contr.sp$iter)!=contr.sp$iter))) stop("invalid number of iterations\n")
   iter <- contr.sp$iter
    if ((contr.sp$dfmaxi<=0)|(contr.sp$dfmaxi>n)) stop("invalid dfmaxi\n")
   if (smoother=="tps") {
+    contr.sp$s <- 0
+    if (is.null(contr.sp$m)) contr.sp$m <- floor(p/2)+1 else {
+      if (contr.sp$m<=(p/2)) stop("order of thin plate splines is invalid (need to be greater than p/2)\n")
+    }
     if (!is.numeric(contr.sp$m) || (contr.sp$m<0) || (floor(contr.sp$m)!=contr.sp$m)) stop("invalid spline order\n")
-  } else contr.sp$m <- NULL
+  }
+  if (smoother=="k") {
+    contr.sp$m <- NULL
+  }
+  if (smoother=="ds") {
+    if (is.null(contr.sp$m)) contr.sp$m <- 2 ## default penalty order 2
+    if (is.null(contr.sp$s)) contr.sp$s <- (p-1)/2 ## default pseudo cubic
+    if ((!is.numeric(contr.sp$m))|(!is.numeric(contr.sp$s))) stop("contr.par$m or contr.par$s is not numeric...\n")
+    contr.sp$m <- round(contr.sp$m)     ## m is integer
+    contr.sp$s <- round(contr.sp$s*2)/2 ## s is in halfs
+    if (contr.sp$m< 1) contr.sp$m <- 1  ## m > 0
+    ## check that -p/2 < s < p/2...
+    if (contr.sp$s >= p/2) { 
+      contr.sp$s <- (p-1)/2
+      warning("contr.par$s value reduced")
+    } 
+    if (contr.sp$s <= -p/2) { 
+      contr.sp$s <- -(p-1)/2
+      warning("contr.par$s value increased")
+    }
+    
+    ## m + s > p/2 for continuity...
+    if ((contr.sp$m+contr.sp$s)<=p/2) {
+      contr.sp$s <- 1/2 + p/2 - contr.sp$m
+      if (contr.sp$s>=p/2) stop("No suitable contr.par$s try increasing contr.par$m")
+      warning("contr.par$s value modified to give continuous function")
+    }
+  }
+  
+  moy <- NULL
+  ec <- NULL
+  if (contr.sp$scale) {
+    if (smoother=="k") warning("when using kernel smoother, you do not need to scale\n")
+    x <- scale(x)
+    moy <- attr(x,"scaled:center")
+    ec <- attr(x,"scaled:scale")
+  }
   if (criterion%in%c("rmse","map")) {
     cv <- list(bwchange=FALSE,ntest=floor(nrow(x)/10),ntrain=NULL,Kfold=FALSE,type="random",seed=NULL,npermut=20)
     cv[(names(cv.options))] <- cv.options
@@ -134,16 +171,17 @@ ibr <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=100000,smoother="k",kerne
     listefit <- fittedA(n,eigenvaluesA,tPADmdemiY,DdemiPA,ddlmini,k=iter)
     residuals <- y-listefit$fit
   }
-  if (smoother=="tps") {
+  if ((smoother=="tps")|(smoother=="ds")) {
     bandwidth <- contr.sp$bandwidth
-    if (length(df)>1) stop("only one df is possible with Thin Plate Splines\n")
+    if (length(df)>1) stop("only one df is possible with Splines\n")
     ddlmini <- choose(contr.sp$m+p-1,contr.sp$m-1)
     if (is.null(bandwidth)) {
-      lambda <- lambdachoice(x,ddlmini*df,m=contr.sp$m,itermax=contr.sp$dftobwitmax)
+      lambda <- lambdachoice(x,ddlmini*df,m=contr.sp$m,contr.sp$s,itermax=contr.sp$dftobwitmax,smoother)
+      bandwidth <- lambda
     } else {
       lambda <- bandwidth
     }
-    S1 <- tpssmoother(x, y,lambda=lambda,m=contr.sp$m)
+    S1 <- dssmoother(x, y,lambda=lambda,m=contr.sp$m,s=contr.sp$s)
     vp1.S1 <- eigen(S1$H,symmetric=TRUE)
     U <- vp1.S1$vect
     eigenvaluesS1 <- vp1.S1$values
@@ -161,11 +199,11 @@ ibr <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=100000,smoother="k",kerne
           if (is.null(df)) stop("df needs to be set\n")
           lambda <- NULL }
         if (contr.sp$exhaustive) {
-          choixk <- iterchoiceS1cve(x,y,lambda,df,ddlmini,cv$ntest,cv$ntrain,cv$Kfold,cv$type,cv$npermut,cv$seed,Kmin,Kmax,contr.sp$m)
+          choixk <- iterchoiceS1cve(x,y,lambda,df,ddlmini,cv$ntest,cv$ntrain,cv$Kfold,cv$type,cv$npermut,cv$seed,Kmin,Kmax,contr.sp$m,contr.sp$s)
           allcrit <- switch(criterion,rmse=choixk$rmse,map=choixk$map)
           iter <- (Kmin:Kmax)[which.min(allcrit)]
         } else {
-          prov <- iterchoiceS1cv(x,y,lambda,df,ddlmini,cv$ntest,cv$ntrain,cv$Kfold,cv$type,cv$npermut,cv$seed,Kmin,Kmax,criterion,contr.sp$m,contr.sp$fraction)
+          prov <- iterchoiceS1cv(x,y,lambda,df,ddlmini,cv$ntest,cv$ntrain,cv$Kfold,cv$type,cv$npermut,cv$seed,Kmin,Kmax,criterion,contr.sp$m,contr.sp$s,contr.sp$fraction)
           iter <- prov$iter
           choixk <- prov$objective
           if (criterion=="rmse") choixk <- sqrt(choixk)
@@ -192,7 +230,7 @@ ibr <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=100000,smoother="k",kerne
     listefit <- fittedS1(n,U,tUy,eigenvaluesS1,ddlmini,iter)
     residuals <- y- listefit$fit
   }
-  res <- list(beta=beta,residuals=residuals,fitted=listefit$fit,iter=iter,initialdf=dfstart,finaldf=listefit$trace,bandwidth=bandwidth,call=list(x=x,y=y,criterion=criterion,smoother=smoother,kernel=kernel,p=p,m=contr.sp$m),criteria=choixk)    
+  res <- list(beta=beta,residuals=residuals,fitted=listefit$fit,iter=iter,initialdf=dfstart,finaldf=listefit$trace,bandwidth=bandwidth,call=list(x=x,y=y,criterion=criterion,smoother=smoother,kernel=kernel,p=p,m=contr.sp$m,s=contr.sp$s,scaled=contr.sp$scale,mean=moy,sd=ec),criteria=choixk)    
   class(res) <- c("ibr", "list")
   return(res)
 }

@@ -1,5 +1,4 @@
 summary.npregression <- function(object, criteria="call", ...) {
-  x <- object$call$x
   y <- object$call$y
   df <- object$df
   r <- object$residuals

@@ -29,5 +29,13 @@ print.summary.ibr <- function(x, displaybw=FALSE, digits = max(3, getOption("dig
       print(bw, digits = digits, ...)
     }
   }
+  if (x$smoother=="ds") {
+    cat("Base smoother: Duchon spline with derivative order m=",x$m,"\n  and weight exponent s=",x$s,"(with",format(round(x$Initial.Df,2)),"df)\n")
+    if (displaybw) {
+      cat("\nBandwith\n")
+      bw <-structure(x$bandwidth, names = "lambda")
+      print(bw, digits = digits, ...)
+    }
+  }
   invisible(x)
 }

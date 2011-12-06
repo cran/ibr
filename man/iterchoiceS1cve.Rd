@@ -3,7 +3,7 @@
 \alias{iterchoiceS1cve}
 
 \title{Selection of the number of iterations for iterative bias
-  reduction smoothers with base thin-plate splines smoother }
+  reduction smoothers with base thin-plate splines smoother or duchon splines smoother}
 
 \description{
 Evaluates at each iteration proposed in the grid the cross-validated
@@ -14,7 +14,7 @@ This function is not intended to be used directly.
 
 \usage{
 iterchoiceS1cve(X, y, lambda, df, ddlmini, ntest, ntrain,
-Kfold, type, npermut, seed, Kmin, Kmax, m)}
+Kfold, type, npermut, seed, Kmin, Kmax, m, s)}
 
 \arguments{
   \item{X}{A numeric matrix of explanatory variables, with \emph{n} rows
@@ -42,9 +42,15 @@ Kfold, type, npermut, seed, Kmin, Kmax, m)}
   \item{Kmax}{The maximum number of bias correction  iterations of the
   search grid considered by
   the model selection procedure for selecting the optimal number of iterations.}
-  \item{m}{The order of thin plate splines. This integer \emph{m} must verifies
-  2\emph{m}/\emph{d}>1, where \emph{d} is the number of explanatory
+  \item{m}{The order of derivatives for the penalty (for thin plate
+  splines it is the order). This integer \emph{m} must verify
+  2\emph{m}+2\emph{s}/\emph{d}>1, where \emph{d} is the number of explanatory
   variables.} 
+  \item{s}{The power of weighting function. For thin plate splines
+  \emph{s} is equal to 0. This real must be strictly smaller than \emph{d}/2
+  (where \emph{d} is the number of explanatory  variables) and must
+  verify 2\emph{m}+2\emph{s}/\emph{d}. To get pseudo-cubic splines,
+  choose \emph{m}=2 and \emph{s}=(\emph{d}-1)/2 (See Duchon).} 
 }
 
 \value{
@@ -52,9 +58,13 @@ Returns the values of RMSE and MAP for each
 value of the grid \code{K}. \code{Inf} are returned if the iteration leads
 to a smoother with a df bigger than \code{ddlmaxi}.}
 
-\references{
-Cornillon, P. A., Hengartner, N. and Matzner-Lober,  E. (2009) Recursive
-Bias Estimation for high dimensional regression smoothers. \emph{submitted}.}
+\references{ Cornillon, P. A., Hengartner, N. and Matzner-Lober,
+E. (2009) Recursive Bias Estimation for high dimensional regression
+smoothers. \emph{submitted}.
+
+Duchon, J. (1977) Splines minimizing rotation-invariant semi-norms in
+Solobev spaces. in W. Shemp and K. Zeller (eds) \emph{Construction theory of
+functions of several variables}, 85-100, Springer, Berlin. }
 
 \author{Pierre-Andre Cornillon, Nicolas Hengartner  and Eric Matzner-Lober.}
 
