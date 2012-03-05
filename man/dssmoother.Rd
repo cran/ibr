@@ -31,8 +31,7 @@ dssmoother(X,Y=NULL,lambda,m,s)
  }
 \details{see the reference for detailed explanation of \emph{Q} (the
   semi kernel or radial basis) and
-  \emph{S} (the polynomial null space). Both matrices are computed using
-  \pkg{fields}.}
+  \emph{S} (the polynomial null space).}
  
 \references{
 Duchon, J. (1977) Splines minimizing rotation-invariant semi-norms in
@@ -48,7 +47,7 @@ matrices denoted \code{Sgu} (for null space) and \code{Qgu}.}
 
 \author{Pierre-Andre Cornillon, Nicolas Hengartner  and Eric Matzner-Lober}
 
-\seealso{\code{\link{ibr}}, \code{\link[fields]{fields.mkpoly}}, \code{\link[fields]{Rad.cov}}}
+\seealso{\code{\link{ibr}}}
 
 
 \keyword{smooth}

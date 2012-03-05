@@ -31,8 +31,7 @@ betaS1(n,U,tUy,eigenvaluesS1,ddlmini,k,lambda,Sgu,Qgu,index0)
  }
 \details{See the reference for detailed explanation of \emph{Q} (the
   semi kernel or radial basis) and
-  \emph{S} (the polynomial null space). Both matrices are computed using
-  \pkg{fields}.}
+  \emph{S} (the polynomial null space).}
  
 \references{
 C. Gu (2002) \emph{Smoothing spline anova models}. New York: Springer-Verlag.}

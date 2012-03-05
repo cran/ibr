@@ -1,4 +1,4 @@
-15a97bd4f84321b65240c291ebc9716b *DESCRIPTION
+252c2f7e92bfc97a1cae0e5b451ede81 *DESCRIPTION
 95f55dcfd01f52599ff2f70c5e70b26b *NAMESPACE
 5835b82dbad08712e0f761b3bbed0d88 *R/AIC.ibr.R
 da3e3cf84e6ccc9e3ce329003376b67e *R/BIC.ibr.R
@@ -25,7 +25,7 @@ bb686e0c8d9a489b420bbf9633ad2fb9 *R/iterchoiceS1cve.R
 be647ac1776304751d589b04c8625db0 *R/kernel.R
 465e9c35edf2c726afdb00ce8118d195 *R/kernelSx.R
 04b5ff26a25f2c7326dd82c3aff009f3 *R/lambdachoice.R
-3488144274813f259ec50abfc69f7e49 *R/npregression.R
+27cdb309edcb7d35a5c4f552756fa3fd *R/npregression.R
 c704ee3e5b1f3bc1d64c43feb941c03d *R/plot.forwardibr.R
 9b1efad54c2e849e21aa206eb4478177 *R/plot.ibr.R
 1a111487f5ab685fac2729ef0315ad5f *R/predict.ibr.R
@@ -44,13 +44,13 @@ ca94e5d642186b33c6a1daab9ac4289c *man/BIC.ibr.Rd
 05ecc92f1334181bd4c98b76d1923827 *man/DuchonQ.Rd
 89112782bdd1853d5a37fd2903729853 *man/DuchonS.Rd
 6599cd8490d1bb451d7d9ce01dc29369 *man/betaA.Rd
-d52d7749fb8fa993a04093111d9f5123 *man/betaS1.Rd
+0b620c4416d307191c37f84c9c0265cf *man/betaS1.Rd
 0120f4ed74f5d3ae75f47a464abaaf47 *man/bwchoice.Rd
 e5737824db6b69dbf98177bc2a027e7b *man/calcA.Rd
 00de482e2489cc9f441f22e5a27de368 *man/cvobs.Rd
 f193f8cf6954dbdd9b40b389cc33dff2 *man/departnoyau.Rd
-e84b9c39c450f842b6ecf9e7a65138c2 *man/dsSx.Rd
-8d7d599b5331595c5cfb2242bc9ca69f *man/dssmoother.Rd
+a95339220a636d256311fd07de93da25 *man/dsSx.Rd
+db2c0f5927a2831ab37979cb9b421d84 *man/dssmoother.Rd
 08524cf6be0a907abfc0cbaa85cbf643 *man/fittedA.Rd
 68e07c6021ce8dfedaef184bfd9337fc *man/fittedS1.Rd
 44c4196aa071616d885e1e479bec289a *man/forward.Rd
