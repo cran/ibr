@@ -27,6 +27,11 @@ The function \code{plot.ibr} computes and returns a list of summary
   Cornillon, P.-A.; Hengartner, N.; Jegou, N. and Matzner-Lober, E. (2012)
   Iterative bias reduction: a comparative study.
 \emph{Statistics and Computing}. Doi: 10.1007/s11222-012-9346-4
+
+  Cornillon, P.-A.; Hengartner, N. and Matzner-Lober, E. (2013)
+  Recursive bias estimation for multivariate regression smoothers Recursive 
+bias estimation for multivariate regression smoothers.
+\emph{ESAIM: Probability and Statistics}. Doi: http://dx.doi.org/10.1051/ps/2013046
 }
 \seealso{\code{\link{ibr}}, \code{\link{summary.ibr}}}
 
