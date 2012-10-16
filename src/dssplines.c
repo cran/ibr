@@ -24,7 +24,7 @@ USA.*/
 void semikerlog(double *x, double *xk, int *nx, int *nxk,double *ksurdeux, int *px, int *negatif, double *dista, int *symmetric)
 {
   double eps;
-  int i,j,l,k;
+  int i,j,l;
   eps = DBL_EPSILON;
   /* case symmetric x=xk */
   if (*symmetric) {
@@ -82,7 +82,7 @@ void semikerlog(double *x, double *xk, int *nx, int *nxk,double *ksurdeux, int *
 void semikerpow(double *x, double *xk, int *nx, int *nxk,double *ksurdeux, int *px, int *negatif, double *dista, int *symmetric)
 {
   double eps;
-  int i,j,l,k;
+  int i,j,l;
   eps = DBL_EPSILON;
   /* case symmetric x=xk */
   if (*symmetric) {
@@ -146,7 +146,7 @@ void polynom(int *m, int *n, int *dim, double
   one=1;
   
   /* Local variables */
-  static int i, j, k, jj, ii, nt, tt, bptr, eptr;
+  static int j, k, ii, nt, tt, bptr, eptr;
   
   
   /* Purpose: create t matrix and append s1 to it. */

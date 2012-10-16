@@ -54,9 +54,10 @@ A list with components \code{iter} and \code{objective} which give the
      of the function at that real point (not rounded).}
 
 \references{
-Cornillon, P. A., Hengartner, N. and Matzner-Lober,  E. (2009) Recursive
-Bias Estimation for high dimensional regression smoothers. \emph{submitted}.}
-
+  Cornillon, P.-A.; Hengartner, N.; Jegou, N. and Matzner-Lober, E. (2012)
+  Iterative bias reduction: a comparative study.
+\emph{Statistics and Computing}. Doi: 10.1007/s11222-012-9346-4
+}
 \author{Pierre-Andre Cornillon, Nicolas Hengartner  and Eric Matzner-Lober.}
 
 \seealso{\code{\link{ibr}}, \code{\link{iterchoiceA}}}

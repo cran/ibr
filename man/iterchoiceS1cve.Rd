@@ -58,9 +58,10 @@ Returns the values of RMSE and MAP for each
 value of the grid \code{K}. \code{Inf} are returned if the iteration leads
 to a smoother with a df bigger than \code{ddlmaxi}.}
 
-\references{ Cornillon, P. A., Hengartner, N. and Matzner-Lober,
-E. (2009) Recursive Bias Estimation for high dimensional regression
-smoothers. \emph{submitted}.
+\references{   Cornillon, P.-A.; Hengartner, N.; Jegou, N. and Matzner-Lober, E. (2012)
+  Iterative bias reduction: a comparative study.
+\emph{Statistics and Computing}. Doi: 10.1007/s11222-012-9346-4
+
 
 Duchon, J. (1977) Splines minimizing rotation-invariant semi-norms in
 Solobev spaces. in W. Shemp and K. Zeller (eds) \emph{Construction theory of
