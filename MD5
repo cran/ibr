@@ -1,8 +1,8 @@
-14c9f28c3521bbe8aad1a23ecbe8f008 *DESCRIPTION
-95f55dcfd01f52599ff2f70c5e70b26b *NAMESPACE
+29cf6270ee49206ca117ccded30ef381 *DESCRIPTION
+7ab556c5ee6951768bb08a52d0310cd3 *NAMESPACE
 5835b82dbad08712e0f761b3bbed0d88 *R/AIC.ibr.R
 da3e3cf84e6ccc9e3ce329003376b67e *R/BIC.ibr.R
-6c697351c2e6621eaca04982a0d624f6 *R/GCV.ibr.R
+9d4f5cc0a457537aff82fb79d5e3bd34 *R/GCV.ibr.R
 236d092ae69d13fa05d2d9da70425544 *R/betaA.R
 5eb209ddf7dac391a77d43597c6dfc39 *R/betaS1.R
 b50df90990caaa598132d50c0e76be03 *R/bwchoice.R
@@ -35,7 +35,7 @@ c704ee3e5b1f3bc1d64c43feb941c03d *R/plot.forwardibr.R
 2efc9d9fec60e552f4da9c91014da98d *R/print.summary.ibr.R
 31cae452ea98139a6a6c54be022ca6e3 *R/print.summary.npregression.R
 817f4fde2be90d7117a3f5c241dc394e *R/residuals.ibr.R
-2a08de59a0c1fc88fd2d1f2f95013139 *R/summary.ibr.R
+a85a8a016aefc1c15db1af332983283c *R/summary.ibr.R
 9936c1cb2dd00b0035a9441e6ac6dc63 *R/summary.npregression.R
 23161c7eb305fec411df18388de0d35c *README
 90e1ec0b80b80c3638cf1be622511552 *data/ozone.rda
