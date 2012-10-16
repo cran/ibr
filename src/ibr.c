@@ -248,7 +248,7 @@ void zerotracegaus(			/* An estimate of the root */
 }
 
 
-void *evaltracetotal(double *x, int *nx, int *px,
+void evaltracetotal(double *x, int *nx, int *px,
 			     double *ax, double *bx, double *objectifuni,
 		     double *Tol, int *Maxit, double *objectif, 
 		     double *resubw, double *trtot, double *sl) /*results */	

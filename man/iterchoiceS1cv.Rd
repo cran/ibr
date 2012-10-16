@@ -60,8 +60,9 @@ fraction)}
 Returns the optimum number of iterations (between \code{Kmin} and \code{Kmax}).}
 
 \references{
-Cornillon, P. A., Hengartner, N. and Matzner-Lober,  E. (2009) Recursive
-Bias Estimation for high dimensional regression smoothers. \emph{submitted}.
+  Cornillon, P.-A.; Hengartner, N.; Jegou, N. and Matzner-Lober, E. (2012)
+  Iterative bias reduction: a comparative study.
+\emph{Statistics and Computing}. Doi: 10.1007/s11222-012-9346-4
 
 Duchon, J. (1977) Splines minimizing rotation-invariant semi-norms in
 Solobev spaces. in W. Shemp and K. Zeller (eds) \emph{Construction theory of

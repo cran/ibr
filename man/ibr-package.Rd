@@ -23,7 +23,7 @@ an R package for multivariate smoothing using Iterative Bias Reduction smoother.
   chosen from the search grid \code{K} to minimize the criterion (GCV,
   AIC, AICc, BIC or gMDL).\cr 
 The user must choose the pilot smoother
-  (kernel \code{"k"} or thin plate splines \code{"tps"})
+  (kernel \code{"k"}, thin plate splines \code{"tps"} or Duchon splines \code{"ds"})
   plus the values of bandwidths (kernel)
   or \eqn{\lambda} thin plate splines). As the choice of these raw
   values depend on each particular dataset, one
@@ -36,6 +36,7 @@ ibr:               Iterative bias reduction smoothing
 plot.ibr:          Plot diagnostic for an ibr object
 predict.ibr:       Predicted values using iterative bias reduction
                    smoothers
+forward:           Variable selection for ibr (forward method)
 print.summary.ibr: Printing iterative bias reduction summaries
 summary.ibr:       Summarizing iterative bias reduction fits
 }

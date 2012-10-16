@@ -55,9 +55,10 @@ type, npermut, seed, Kmin, Kmax, criterion, fraction)}
 Returns the optimum number of iterations (between \code{Kmin} and \code{Kmax}).}
 
 \references{
-Cornillon, P. A., Hengartner, N. and Matzner-Lober,  E. (2009) Recursive
-Bias Estimation for high dimensional regression smoothers. \emph{submitted}.}
-
+  Cornillon, P.-A.; Hengartner, N.; Jegou, N. and Matzner-Lober, E. (2012)
+  Iterative bias reduction: a comparative study.
+\emph{Statistics and Computing}. Doi: 10.1007/s11222-012-9346-4
+}
 \author{Pierre-Andre Cornillon, Nicolas Hengartner  and Eric Matzner-Lober.}
 
 \seealso{\code{\link{ibr}}}
