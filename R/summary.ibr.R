@@ -3,8 +3,8 @@ summary.ibr <- function(object, criteria="call", ...) {
   colnamesx <- colnames(object$call$x)
   y <- object$call$y
   n <- length(r)
-  stderr <- sqrt(sum(r^2)/(n-object$finaldf))
-  sigma2 <- stderr^2
+  sigma2 <- sum(r^2)/(n)
+  stderr <- sqrt(n*sum(r^2)/(n-object$finaldf))
   if (any(criteria=="call")) {
     criteria <- object$call$criterion
     anscrit <- NULL
