@@ -64,6 +64,11 @@ Returns the optimum number of iterations (between \code{Kmin} and \code{Kmax}).}
   Iterative bias reduction: a comparative study.
 \emph{Statistics and Computing}. Doi: 10.1007/s11222-012-9346-4
 
+  Cornillon, P.-A.; Hengartner, N. and Matzner-Lober, E. (2013)
+  Recursive bias estimation for multivariate regression smoothers Recursive 
+bias estimation for multivariate regression smoothers.
+\emph{ESAIM: Probability and Statistics}. Doi: http://dx.doi.org/10.1051/ps/2013046
+
 Duchon, J. (1977) Splines minimizing rotation-invariant semi-norms in
 Solobev spaces. in W. Shemp and K. Zeller (eds) \emph{Construction theory of
 functions of several variables}, 85-100, Springer, Berlin. }
