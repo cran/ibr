@@ -1,10 +1,28 @@
-forward <- function(X,Y,criterion="gcv",df=1.5,Kmin=1,Kmax=10000,smoother="k",kernel="g",control.par=list(),cv.options=list(),varcrit=criterion) {
+forward <- function(formula,data,subset,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",kernel="g",rank=NULL,control.par=list(),cv.options=list(),varcrit=criterion) {
+  cl <- match.call() 
+  mf <- match.call()
+  m <- match(c("formula", "data", "subset"), names(mf), 0L)
+  mf <- mf[c(1L, m)]
+  mf$drop.unused.levels <- TRUE
+  mf$na.action <- "na.fail"
+  mf[[1L]] <- quote(stats::model.frame)
+  mf <- eval(mf, parent.frame())
+  mt <- attr(mf, "terms")
+  attr(mt,"intercept") <- 0
+  offset <- as.vector(model.offset(mf))
+  if (!is.null(offset)) stop("offset are not allowed")
+  if (is.empty.model(mt)) stop("no model ?")
+  if (any(apply(mf,2,is.factor)))  stop("no factor are allowed")
+  y <- model.response(mf, "numeric")
+  x <- model.matrix(mt, mf)
+  attributes(x) <- attributes(x)[c("dim","dimnames")]
   crit <-c("aic","aicc","gcv","bic","gmdl","rmse","map")
   varcrit <- match.arg(varcrit,crit)
   garde <- NULL
-  ptot <- ncol(X)
+  ptot <- ncol(x)
   possible <- 1:ptot
   resultat <- matrix(Inf,ptot,ptot)
+  colnames(resultat) <- colnames(x)
   letop <- Inf
   bandwidth <- NULL
   if (!((any(names(control.par)=="bandwidth")&&is.numeric(control.par$bandwidth))|((any(names(control.par)=="dftotal"))&&control.par$dftotal))&(smoother=="k"))
@@ -12,8 +30,8 @@ forward <- function(X,Y,criterion="gcv",df=1.5,Kmin=1,Kmax=10000,smoother="k",ke
   for (iter in 1:ptot) {
     for (i in possible) {
       garden <- sort(c(garde,i))
-      if ((iter>1)&&(!((any(names(control.par)=="bandwidth")&&is.numeric(control.par$bandwidth))|((any(names(control.par)=="dftotal"))&&control.par$dftotal))&((smoother=="k")&(kernel!="g")))) res3 <- ibr(X[,garden,drop=FALSE],Y,criterion,df,Kmin,Kmax,smoother,kernel,control.par=c(control.par,list(bandwidth=bandwidth[garden])),cv.options)   else
-      res3 <- ibr(X[,garden,drop=FALSE],Y,criterion,df,Kmin,Kmax,smoother,kernel,control.par,cv.options)
+      if ((iter>1)&&(!((any(names(control.par)=="bandwidth")&&is.numeric(control.par$bandwidth))|((any(names(control.par)=="dftotal"))&&control.par$dftotal))&((smoother=="k")&(kernel!="g")))) res3 <- ibr.fit(x[,garden,drop=FALSE],y,criterion,df,Kmin,Kmax,smoother,kernel,rank,control.par=c(control.par,list(bandwidth=bandwidth[garden])),cv.options)   else
+      res3 <- ibr.fit(x[,garden,drop=FALSE],y,criterion,df,Kmin,Kmax,smoother,kernel,rank,control.par,cv.options)
       if ((iter==1)&&(!((any(names(control.par)=="bandwidth")&&is.numeric(control.par$bandwidth))|((any(names(control.par)=="dftotal"))&&control.par$dftotal))&((smoother=="k")&(kernel!="g"))))
         bandwidth[i] <- res3$bandwidth
       if (any(names(control.par)=="exhaustive")&&control.par$exhaustive) {

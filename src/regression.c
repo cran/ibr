@@ -17,7 +17,7 @@ void regg(double *x, int *nx,double *y, double *bw, double *valx, int *nvalx, do
       /* boucle sur les valeurs observees (indice j)*/
 	for(j = 0; j < *nx; j++) {
       /* poids */
-	  w= exp(-0.5*(pow((valx[i]-x[j])/(*bw) ,2))) /sqrt(2*3.14159265358979);
+	  w= exp(-0.5*(pow((valx[i]-x[j])/(*bw) ,2))) /2.5066282746310005024157652848111;
 	  if (i==j) wii=w;
 	  some=some+w;
       /* regression */ 
@@ -137,7 +137,7 @@ void regu(double *x, int *nx,double *y, double *bw, double *valx, int *nvalx, do
 /***********************************************************/
 /***********************************************************/
 /***********************************************************/
-void reggcv(double *x, int *nx,double *y, double *bw, int *nbw, double *effold, int *neffold, double *sse, double *sap )
+void reggcv(double *x, int *nx,double *y, double *bw, int *nbw, int *effold, int *neffold, double *sse, double *sap )
 {
   int i, j, k, h ; 
 
@@ -161,7 +161,7 @@ void reggcv(double *x, int *nx,double *y, double *bw, int *nbw, double *effold, 
 	  if ((j>=effold[k+1])||(j<effold[k])) {
 	    /* alors calculs */
 	    /* poids */
-	    w= exp(-0.5*(pow((x[i]-x[j])/(bw[h]) ,2))) /sqrt(2*3.14159265358979);
+	    w= exp(-0.5*(pow((x[i]-x[j])/(bw[h]) ,2))) /2.5066282746310005024157652848111;
 	    some=some+w;
 	    /* regression */ 
 	    regx=regx+w*y[j];
@@ -183,7 +183,7 @@ void reggcv(double *x, int *nx,double *y, double *bw, int *nbw, double *effold, 
 }
 
 /***********************************************************/
-void regecv(double *x, int *nx,double *y, double *bw, int *nbw, double *effold, int *neffold, double *sse, double *sap )
+void regecv(double *x, int *nx,double *y, double *bw, int *nbw, int *effold, int *neffold, double *sse, double *sap )
 {
   int i, j, k, h ; 
 
@@ -232,7 +232,7 @@ void regecv(double *x, int *nx,double *y, double *bw, int *nbw, double *effold, 
   }
 }
 /***********************************************************/
-void regqcv(double *x, int *nx,double *y, double *bw, int *nbw, double *effold, int *neffold, double *sse, double *sap )
+void regqcv(double *x, int *nx,double *y, double *bw, int *nbw, int *effold, int *neffold, double *sse, double *sap )
 {
   int i, j, k, h ; 
 
@@ -279,7 +279,7 @@ void regqcv(double *x, int *nx,double *y, double *bw, int *nbw, double *effold, 
   }
 }
 /***********************************************************/
-void regucv(double *x, int *nx,double *y, double *bw, int *nbw, double *effold, int *neffold, double *sse, double *sap )
+void regucv(double *x, int *nx,double *y, double *bw, int *nbw, int *effold, int *neffold, double *sse, double *sap )
 {
   int i, j, k, h ; 
 

@@ -1,35 +1,34 @@
-\name{iterchoiceAcv}
+\name{iterchoiceS1lrcv}
 
-\alias{iterchoiceAcv}
+\alias{iterchoiceS1lrcv}
 
-\title{Selection of the number of iterations for iterative bias reduction smoothers}
+\title{Selection of the number of iterations for iterative bias
+  reduction smoothers with base lowrank thin-plate splines or duchon splines smoother}
 
 \description{
-The function \code{iterchoiceAcv} searches the interval from \code{mini} to
+The function \code{iterchoiceS1cv} searches the interval from \code{mini} to
      \code{maxi} for a minimum of the function \code{criterion} with respect
      to its first argument using \code{\link{optimize}}. This function is not intended to be used directly.
 }
 
 \usage{
-iterchoiceAcv(X, y, bx, df, kernelx, ddlmini, ntest, ntrain, Kfold,
-type, npermut, seed, Kmin, Kmax, criterion, fraction)}
+iterchoiceS1lrcv(X, y, lambda, rank, bs, listvarx, df, ddlmini, ntest, ntrain,
+Kfold, type, npermut, seed, Kmin, Kmax, criterion, m, s,
+fraction)}
 
 \arguments{
   \item{X}{A numeric matrix of explanatory variables, with \emph{n} rows
   and \emph{p} columns.}
   \item{y}{A numeric vector of variable to be explained of length \emph{n}.}
-  \item{bx}{The vector of different bandwidths, length \eqn{p}.}
-  \item{df}{A numeric vector of either length 1 or length equal to the
-    number of columns of \code{x}. If \code{smoother="k"}, it indicates
-    the  desired effective degree of
-  freedom (trace) of the smoothing   matrix for
-    each variable ; \code{df} is repeated when the length of vector
-  \code{df} is 1. This argument is useless if
-  \code{bandwidth} is supplied (non null).}
-  \item{kernelx}{Character string which allows to choose between gaussian kernel
-  (\code{"g"}), Epanechnikov (\code{"e"}), uniform (\code{"u"}),
-  quartic (\code{"q"}). The default (gaussian kernel) is strongly advised.}
-  \item{ddlmini}{The number of eigenvalues (numerically) equals to 1.}
+  \item{lambda}{A numeric positive coefficient that governs the
+  amount of penalty (coefficient lambda).}
+  \item{df}{A numeric vector of length 1 which is multiplied by the minimum df of thin
+  plate splines ; This argument is useless if
+  \code{lambda} is supplied (non null).}
+ \item{rank}{The rank of lowrank splines.}
+ \item{bs}{The type rank of lowrank splines: \code{tps} or \code{ds}.}
+ \item{listvarx}{The vector of the names of explanatory variables}
+ \item{ddlmini}{The number of eigenvalues equals to 1.}
   \item{ntest}{The number of observations in test set.}
   \item{ntrain}{The number of observations in training set.}
   \item{Kfold}{Either the number of folds or a boolean or \code{NULL}.}
@@ -48,6 +47,15 @@ type, npermut, seed, Kmin, Kmax, criterion, fraction)}
   the model selection procedure for selecting the optimal number of iterations.}
   \item{criterion}{The criteria available are map (\code{"map"}) or rmse
     (\code{"rmse"}).}
+  \item{m}{The order of derivatives for the penalty (for thin plate
+  splines it is the order). This integer \emph{m} must verify
+  2\emph{m}+2\emph{s}/\emph{d}>1, where \emph{d} is the number of explanatory
+  variables.} 
+  \item{s}{The power of weighting function. For thin plate splines
+  \emph{s} is equal to 0. This real must be strictly smaller than \emph{d}/2
+  (where \emph{d} is the number of explanatory  variables) and must
+  verify 2\emph{m}+2\emph{s}/\emph{d}. To get pseudo-cubic splines,
+  choose \emph{m}=2 and \emph{s}=(\emph{d}-1)/2 (See Duchon, 1977).} 
   \item{fraction}{The subdivision of the interval [\code{Kmin},\code{Kmax}].}
 }
 
@@ -63,7 +71,16 @@ Returns the optimum number of iterations (between \code{Kmin} and \code{Kmax}).}
   Recursive bias estimation for multivariate regression smoothers Recursive 
 bias estimation for multivariate regression smoothers.
 \emph{ESAIM: Probability and Statistics}, \emph{18}, 483-502.
+
+Duchon, J. (1977) Splines minimizing rotation-invariant semi-norms in
+Solobev spaces. in W. Shemp and K. Zeller (eds) \emph{Construction theory of
+  functions of several variables}, 85-100, Springer, Berlin.
+
+Wood, S.N. (2003) Thin plate regression
+  splines. \emph{J. R. Statist. Soc. B}, \emph{65}, 95-114.
+
 }
+
 \author{Pierre-Andre Cornillon, Nicolas Hengartner  and Eric Matzner-Lober.}
 
 \seealso{\code{\link{ibr}}}

@@ -1,6 +1,6 @@
-\name{fittedS1}
+\name{fittedS1lr}
 
-\alias{fittedS1}
+\alias{fittedS1lr}
 
 \title{Evaluate the fit for iterative bias reduction model}
 
@@ -8,7 +8,7 @@
   model for iteration \code{k}. This function is not intended to be used directly.}
 
 \usage{
-fittedS1(n,U,tUy,eigenvaluesS1,ddlmini,k)
+fittedS1lr(n,U,tUy,eigenvaluesS1,ddlmini,k,rank)
 }
 
 \arguments{
@@ -21,6 +21,7 @@ fittedS1(n,U,tUy,eigenvaluesS1,ddlmini,k)
   symmetric smoothing matrix \emph{S}.}
   \item{ddlmini}{The number of eigen values of \emph{S} equal to 1.}
   \item{k}{A numeric vector which gives the number of iterations}
+ \item{rank}{The rank of lowrank splines.}
 }
  
 \references{
@@ -32,6 +33,9 @@ fittedS1(n,U,tUy,eigenvaluesS1,ddlmini,k)
   Recursive bias estimation for multivariate regression smoothers Recursive 
 bias estimation for multivariate regression smoothers.
 \emph{ESAIM: Probability and Statistics}, \emph{18}, 483-502.
+
+Wood, S.N. (2003) Thin plate regression
+  splines. \emph{J. R. Statist. Soc. B}, \emph{65}, 95-114.
 }
 \details{see the reference for detailed explanation of computation of iterative bias reduction smoother}
 

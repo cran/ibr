@@ -42,7 +42,7 @@ iterchoiceS1cv <- function(X,y,lambda,df,ddlmini,ntest,ntrain,Kfold,type,npermut
   dep <- length(fraction)
   U <- as.list(rep(0,length(sel)))
   S1 <- valpr <- tUy <- Sp <- lambdalist <- preprod <- SSx <- U
-  ddlmin <- index0 <- nj <- rep(0,length(sel))
+  ddlmin <- index0 <- rep(0,length(sel))
   for (j in 1:length(sel)) {
     if (attr(sel,"type")=="timeseries") {
       XA <- X[-(sel[[j]][1]:n),,drop=FALSE]

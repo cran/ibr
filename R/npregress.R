@@ -1,4 +1,4 @@
-npregression <- function(x,y,criterion="rmse",bandwidth=NULL,kernel="g",control.par=list(),cv.options=list()) {
+npregress <- function(x,y,criterion="rmse",bandwidth=NULL,kernel="g",control.par=list(),cv.options=list()) {
   kern <- c("g","q","e","u")
   kernel <- match.arg(kernel,kern)
   if (any(is.na(x))) stop("NA's in x\n")
@@ -45,7 +45,7 @@ npregression <- function(x,y,criterion="rmse",bandwidth=NULL,kernel="g",control.
     effold <- c(0,cumsum(nj))
     neffold <- length(sel)
     nom1 <- paste(nom,kernel,"cv",sep="")
-    prov <- .C(nom1,as.double(xord),as.integer(length(xord)),as.double(yord),as.double(gridbw),as.integer(length(gridbw)),as.double(effold),as.integer(neffold),double(length(gridbw)),double(length(gridbw)))
+    prov <- .C(nom1,as.double(xord),as.integer(length(xord)),as.double(yord),as.double(gridbw),as.integer(length(gridbw)),as.integer(effold),as.integer(neffold),double(length(gridbw)),double(length(gridbw)))
     rmse <- sqrt(prov[[8]]/sum(n-nj))
     map <- prov[[9]]/sum(n-nj)
     choixbw <- list(gridbw=gridbw,rmse=rmse,map=map)
@@ -65,7 +65,7 @@ npregression <- function(x,y,criterion="rmse",bandwidth=NULL,kernel="g",control.
   residuals <- y- fit
   
   res <- list(bandwidth=bandwidth,residuals=residuals,fitted=fit,df=df,call=list(x=x,y=y,criterion=criterion,kernel=kernel,degree=contr.sp$degree),criteria=choixbw)
-  class(res) <- c("npregression", "list")
+  class(res) <- c("npregress", "list")
   return(res)
 }
 

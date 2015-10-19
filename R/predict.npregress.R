@@ -1,4 +1,4 @@
-predict.npregression <- function(object, newdata, interval= c("none", "confidence", "prediction"), deriv=FALSE, ...) {
+predict.npregress <- function(object, newdata, interval= c("none", "confidence", "prediction"), deriv=FALSE, ...) {
   interval <- match.arg(interval)
   if ((interval == "prediction")|(interval == "confidence")) {
     warning("Interval for prediction/confidence is not implemented yet\n")

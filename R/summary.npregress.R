@@ -1,4 +1,4 @@
-summary.npregression <- function(object, criteria="call", ...) {
+summary.npregress<- function(object, criteria="call", ...) {
   y <- object$call$y
   df <- object$df
   r <- object$residuals
@@ -29,6 +29,6 @@ summary.npregression <- function(object, criteria="call", ...) {
   names(anscrit) <- criteria
 }
   ans <- list(residuals=r,Std.Error=stderr,Df=df,Resid.Df=n-df,criteria=anscrit,kernel=object$call$kernel,crit4bw=object$call$criterion,bandwidth=object$bandwidth)
-  class(ans) <- "summary.npregression"
+  class(ans) <- "summary.npregress"
   ans
 }

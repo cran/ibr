@@ -1,9 +1,9 @@
-\name{iterchoiceS1cve}
+\name{iterchoiceS1lrcve}
 
-\alias{iterchoiceS1cve}
+\alias{iterchoiceS1lrcve}
 
 \title{Selection of the number of iterations for iterative bias
-  reduction smoothers with base thin-plate splines smoother or duchon splines smoother}
+  reduction smoothers with base lowrank thin-plate splines smoother or duchon splines smoother}
 
 \description{
 Evaluates at each iteration proposed in the grid the cross-validated
@@ -13,7 +13,7 @@ This function is not intended to be used directly.
 }
 
 \usage{
-iterchoiceS1cve(X, y, lambda, df, ddlmini, ntest, ntrain,
+iterchoiceS1lrcve(X, y, lambda, rank, bs, listvarx, df, ddlmini, ntest, ntrain,
 Kfold, type, npermut, seed, Kmin, Kmax, m, s)}
 
 \arguments{
@@ -22,6 +22,9 @@ Kfold, type, npermut, seed, Kmin, Kmax, m, s)}
   \item{y}{A numeric vector of variable to be explained of length \emph{n}.}
   \item{lambda}{A numeric positive coefficient that governs the
   amount of penalty (coefficient lambda).}
+ \item{rank}{The rank of lowrank splines.}
+ \item{bs}{The type rank of lowrank splines: \code{tps} or \code{ds}.}
+ \item{listvarx}{The vector of the names of explanatory variables}
   \item{df}{A numeric vector of length 1 which is multiplied by the minimum df of thin
   plate splines ; This argument is useless if
   \code{lambda} is supplied (non null).}
@@ -71,7 +74,11 @@ bias estimation for multivariate regression smoothers.
 
 Duchon, J. (1977) Splines minimizing rotation-invariant semi-norms in
 Solobev spaces. in W. Shemp and K. Zeller (eds) \emph{Construction theory of
-functions of several variables}, 85-100, Springer, Berlin. }
+  functions of several variables}, 85-100, Springer, Berlin.
+
+Wood, S.N. (2003) Thin plate regression
+  splines. \emph{J. R. Statist. Soc. B}, \emph{65}, 95-114.
+}
 
 \author{Pierre-Andre Cornillon, Nicolas Hengartner  and Eric Matzner-Lober.}
 

@@ -8,8 +8,18 @@ print.summary.ibr <- function(x, displaybw=FALSE, digits = max(3, getOption("dig
   cat("Residual standard error:", format(signif(x$Std.Error, 
         digits)), "on", format(round(x$Resid.Df,1)), "degrees of freedom\n")
   cat("\nInitial df:", format(round(x$Initial.Df,2)), "; Final df:", format(round(x$Final.Df,2)), "\n")
-  crite <-structure(x$criteria, names = names(x$criteria))
-  print(crite, digits = digits, ...)
+  if (!is.null(x$criteria)) {
+      crite <-structure(x$criteria, names = names(x$criteria))
+      if (length(crite)>1) {
+          cat("\nCriteria:\n")
+      }
+      print(crite, digits = digits, ...)
+  if ((length(crite)>1)&&(!all(is.na(x$iterations)))) {
+    cat("Iterations:\n")
+  crite2 <- structure(x$iterations,names = names(x$iterations))
+    print(crite2, digits = digits, ...)
+}
+  }
   cat("\nNumber of iterations:", x$iter, "chosen by", x$crit4iter, "\n")
   kernelsmooth <- c("gaussian kernel","Epanechnikov kernel","uniform kernel","quartic kernel")
   resu <- match(x$kernel,c("g","e","u","q"))

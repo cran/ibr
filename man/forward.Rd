@@ -6,19 +6,26 @@
 \title{Iterative bias reduction smoothing}
 
 \description{ Performs a forward variable selection for iterative bias
-  reduction using kernel or thin plate splines. In the latter case, the
-  order \emph{m} is chosen as the first integer such that
-  2\emph{m}/\emph{d}>1, where \emph{d} is the number of explanatory
-  variables.  \cr Missing values are not allowed.}
+  reduction using kernel, thin plate splines or low rank splines.
+  Missing values are not allowed.}
 
 \usage{
-forward(X, Y, criterion="gcv", df=1.5, Kmin=1, Kmax=10000, smoother="k", kernel="g",
- control.par=list(), cv.options=list(),varcrit=criterion)}
+forward(formula,data,subset,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,
+   smoother="k",kernel="g",rank=NULL,control.par=list(),cv.options=list(),
+   varcrit=criterion)}
 
 \arguments{
-  \item{X}{A numeric matrix of explanatory variables, with \emph{n} rows
-  and \emph{p} columns.}
-  \item{Y}{A numeric vector of variable to be explained of length \emph{n}.}
+  \item{formula}{An object of class \code{"\link{formula}"} (or one that
+    can be coerced to that class): a symbolic description of the
+    model to be fitted. }
+
+  \item{data}{An optional data frame, list or environment (or object
+    coercible by \code{\link{as.data.frame}} to a data frame) containing
+    the variables in the model.  If not found in \code{data}, the
+    variables are taken from \code{environment(formula)},
+    typically the environment from which \code{forward} is called.}
+  \item{subset}{An optional vector specifying a subset of observations
+    to be used in the fitting process.}
   \item{criterion}{Character string. If the number of iterations
   (\code{iter}) is missing or 
   \code{NULL} the number of iterations is chosen using
@@ -42,9 +49,15 @@ forward(X, Y, criterion="gcv", df=1.5, Kmin=1, Kmax=10000, smoother="k", kernel=
   the model selection procedure for selecting the optimal number of iterations.}
 \item{smoother}{Character string which allows to choose between thine plate
   splines \code{"tps"} or kernel (\code{"k"}).}
-  \item{kernel}{Character string which allows to choose between gaussian kernel
+
+\item{kernel}{Character string which allows to choose between gaussian kernel
   (\code{"g"}), Epanechnikov (\code{"e"}), uniform (\code{"u"}),
   quartic (\code{"q"}). The default (gaussian kernel) is strongly advised.}
+
+\item{rank}{Numeric value that control the rank of low rank splines
+  (denoted as \code{k} in mgcv package ; see also \link[mgcv]{choose.k}
+  for further details or \link{gam} for another smoothing approach with
+  reduced rank smoother.}
 
 \item{control.par}{a named list that control optional parameters. The
   components are \code{bandwidth} (default to NULL), \code{iter}
@@ -149,12 +162,12 @@ forward(X, Y, criterion="gcv", df=1.5, Kmin=1, Kmax=10000, smoother="k", kernel=
 \references{
   Cornillon, P.-A.; Hengartner, N.; Jegou, N. and Matzner-Lober, E. (2012)
   Iterative bias reduction: a comparative study.
-\emph{Statistics and Computing}. Doi: 10.1007/s11222-012-9346-4
+\emph{Statistics and Computing}, \emph{23}, 777-791.
 
   Cornillon, P.-A.; Hengartner, N. and Matzner-Lober, E. (2013)
   Recursive bias estimation for multivariate regression smoothers Recursive 
 bias estimation for multivariate regression smoothers.
-\emph{ESAIM: Probability and Statistics}. Doi: http://dx.doi.org/10.1051/ps/2013046
+\emph{ESAIM: Probability and Statistics}, \emph{18}, 483-502.
 }
 \seealso{\code{\link{ibr}}, \code{\link{plot.forwardibr}}}
 

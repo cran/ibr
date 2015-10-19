@@ -1,4 +1,4 @@
-print.summary.npregression <- function(x, digits = max(3, getOption("digits") - 3), ...) {
+print.summary.npregress <- function(x, digits = max(3, getOption("digits") - 3), ...) {
   resid <- x$residuals
   df <- x$df
   nam <- c("Min", "1Q", "Median", "3Q", "Max")

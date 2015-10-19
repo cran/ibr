@@ -1,8 +1,8 @@
-\name{npregression}
+\name{npregress}
 
-\alias{npregression}
-\alias{print.npregression}
-\alias{residuals.npregression}
+\alias{npregress}
+\alias{print.npregress}
+\alias{residuals.npregress}
 
 \title{Local polynomials smoothing}
 
@@ -12,7 +12,7 @@ Missing values are not allowed.
 }
 
 \usage{
-npregression(x, y, criterion="rmse", bandwidth=NULL,kernel="g",
+npregress(x, y, criterion="rmse", bandwidth=NULL,kernel="g",
              control.par=list(), cv.options=list())}
 
 \arguments{
@@ -54,7 +54,7 @@ npregression(x, y, criterion="rmse", bandwidth=NULL,kernel="g",
 }
 
 \value{
-Returns an object of class \code{npregression} which is a list including:
+Returns an object of class \code{npregress} which is a list including:
   \item{bandwidth}{The kernel bandwidth smoothing parameter.}
   \item{residuals}{Vector of residuals.}
   \item{fitted}{Vector of fitted values.}
@@ -79,8 +79,8 @@ Returns an object of class \code{npregression} which is a list including:
 \references{
 Wand, M. P. and Jones, M. C. (1995). \emph{Kernel Smoothing}. Chapman and Hall, London.}
 
-\seealso{\code{\link{predict.npregression}},
-  \code{\link{summary.npregression}},
+\seealso{\code{\link{predict.npregress}},
+  \code{\link{summary.npregress}},
   \code{\link[KernSmooth]{locpoly}}, \code{\link{ibr}}}
 
 \examples{
@@ -91,7 +91,7 @@ z <- f(x)
 sigma2 <- 0.05*var(z)
 erreur <- rnorm(n,0,sqrt(sigma2))
 y <- z+erreur
-res <- npregression(x,y,bandwidth=0.02)
+res <- npregress(x,y,bandwidth=0.02)
 summary(res)
 ord <- order(x)
 plot(x,y)

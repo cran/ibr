@@ -1,26 +1,26 @@
-\name{print.summary.npregression}
+\name{print.summary.npregress}
 
-\alias{print.summary.npregression}
+\alias{print.summary.npregress}
 
 \title{Printing iterative bias reduction summaries}
 
 \description{
-  \code{print} method for class  \dQuote{\code{summary.npregression}}.
+  \code{print} method for class  \dQuote{\code{summary.npregress}}.
 }
 
 \usage{
-\method{print}{summary.npregression}(x,digits =
+\method{print}{summary.npregress}(x,digits =
 max(3, getOption("digits") - 3), \dots)}
 
 \arguments{
-  \item{x}{Object of class \code{\link{npregression}}.}
+  \item{x}{Object of class \code{\link{npregress}}.}
   \item{digits}{Rounds the values in its first argument to the specified
      number of significant digits.}
   \item{\dots}{Further arguments passed to or from other methods.}
 }
 
 \value{
-The function \code{print.summary.npregression} prints a list of summary
+The function \code{print.summary.npregress} prints a list of summary
      statistics of the fitted  iterative bias reduction model given in \code{x}.}
 
 \author{Pierre-Andre Cornillon, Nicolas Hengartner and Eric Matzner-Lober.}
@@ -36,7 +36,7 @@ z <- f(x)
 sigma2 <- 0.05*var(z)
 erreur <- rnorm(n,0,sqrt(sigma2))
 y <- z+erreur
-res <- npregression(x,y,bandwidth=0.02)
+res <- npregress(x,y,bandwidth=0.02)
 summary(res)
 }
 

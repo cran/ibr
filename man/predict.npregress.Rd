@@ -1,6 +1,6 @@
-\name{predict.npregression}
+\name{predict.npregress}
 
-\alias{predict.npregression}
+\alias{predict.npregress}
 
 \title{Predicted values using using local polynomials
 
@@ -15,11 +15,11 @@
 }
 
 \usage{
-\method{predict}{npregression}(object, newdata, interval=
+\method{predict}{npregress}(object, newdata, interval=
  c("none", "confidence", "prediction"), deriv=FALSE, \dots)}
 
 \arguments{
-  \item{object}{Object of class \code{\link{npregression}}.}
+  \item{object}{Object of class \code{\link{npregress}}.}
   \item{newdata}{An optional vector of values to be predicted. If omitted, the fitted values are used.}
   \item{interval}{Type of interval calculation. Only \code{none} is
   currently avalaible.}
@@ -38,7 +38,7 @@
 \references{
 Wand, M. P. and Jones, M. C. (1995). \emph{Kernel Smoothing}. Chapman and Hall, London.}
 
-\seealso{\code{\link{npregression}}, \code{\link{summary.npregression}},
+\seealso{\code{\link{npregress}}, \code{\link{summary.npregress}},
   \code{\link[KernSmooth]{locpoly}}
 }
 
@@ -51,7 +51,7 @@ sigma2 <- 0.05*var(z)
 erreur<-rnorm(n,0,sqrt(sigma2))
 y<-z+erreur
 grid <- seq(min(x),max(x),length=500)
-res <- npregression(x,y,bandwidth=0.02,control.par=list(degree=1))
+res <- npregress(x,y,bandwidth=0.02,control.par=list(degree=1))
 plot(x,y)
 lines(grid,predict(res,grid))
 }

@@ -1,35 +1,23 @@
-\name{ibr}
+\name{ibr.fit}
 
-\alias{ibr}
-\alias{print.ibr}
-\alias{residuals.ibr}
+\alias{ibr.fit}
 
 \title{Iterative bias reduction smoothing}
 
 \description{
   Performs iterative bias reduction using kernel, thin plate
-  splines Duchon splines or low rank splines. 
-Missing values are not allowed.
+  splines, Duchon splines or low rank splines. 
+Missing values are not allowed. This function is not intended to be used directly.
 }
 
 \usage{
-ibr(formula, data, subset, criterion="gcv", df=1.5, Kmin=1, Kmax=1e+06, smoother="k",
+ibr.fit(x, y, criterion="gcv", df=1.5, Kmin=1, Kmax=1e+06, smoother="k",
  kernel="g", rank=NULL, control.par=list(), cv.options=list())}
 
 \arguments{
-  \item{formula}{An object of class \code{"\link{formula}"} (or one that
-    can be coerced to that class): a symbolic description of the
-    model to be fitted. }
-
-  \item{data}{An optional data frame, list or environment (or object
-    coercible by \code{\link{as.data.frame}} to a data frame) containing
-    the variables in the model.  If not found in \code{data}, the
-    variables are taken from \code{environment(formula)},
-    typically the environment from which \code{ibr} is called.}
-
-  \item{subset}{An optional vector specifying a subset of observations
-    to be used in the fitting process.}
-
+  \item{x}{A numeric matrix of explanatory variables, with \emph{n} rows
+    and \emph{p} columns.}
+  \item{y}{A numeric vector of variable to be explained of length \emph{n}.}
   \item{criterion}{A vector of string. If the number of iterations
     (\code{iter}) is missing or 
     \code{NULL} the number of iterations is chosen using the either one
@@ -189,7 +177,7 @@ ibr(formula, data, subset, criterion="gcv", df=1.5, Kmin=1, Kmax=1e+06, smoother
 }
 
 \value{
-Returns an object of class \code{ibr} which is a list including:
+Returns a list including:
   \item{beta}{Vector of coefficients.}
   \item{residuals}{Vector of residuals.}
   \item{fitted}{Vector of fitted values.}
@@ -229,10 +217,7 @@ Returns an object of class \code{ibr} which is a list including:
     of criteria at the given optimal iteration if a non exhaustive
     search is chosen (see also \code{exhaustive} component of list
     \code{control.par}).}
-  \item{call}{The matched call.}
-  \item{terms}{The 'terms' object used.}
 }
-
 
 \author{Pierre-Andre Cornillon, Nicolas Hengartner  and Eric Matzner-Lober.}
 
@@ -250,37 +235,8 @@ Wood, S.N. (2003) Thin plate regression
   splines. \emph{J. R. Statist. Soc. B}, \emph{65}, 95-114.
 }
 
-\seealso{\code{\link{predict.ibr}}, \code{\link{summary.ibr}}, \link[mgcv]{gam}}
+\seealso{\code{\link{ibr}}, \code{\link{predict.ibr}}, \code{\link{summary.ibr}}, \link[mgcv]{gam}}
 
-\examples{
-f <- function(x, y) { .75*exp(-((9*x-2)^2 + (9*y-2)^2)/4) +
-                      .75*exp(-((9*x+1)^2/49 + (9*y+1)^2/10)) +
-                      .50*exp(-((9*x-7)^2 + (9*y-3)^2)/4) -
-                      .20*exp(-((9*x-4)^2 + (9*y-7)^2)) }
-# define a (fine) x-y grid and calculate the function values on the grid
-ngrid <- 50; xf <- seq(0,1, length=ngrid+2)[-c(1,ngrid+2)]
-yf <- xf ; zf <- outer(xf, yf, f)
-grid <- cbind.data.frame(x=rep(xf, ngrid),y=rep(xf, rep(ngrid, ngrid)),z=as.vector(zf))
-persp(xf, yf, zf, theta=130, phi=20, expand=0.45,main="True Function")
-#generate a data set with function f and noise to signal ratio 5
-noise <- .2 ; N <- 100 
-xr <- seq(0.05,0.95,by=0.1) ; yr <- xr ; zr <- outer(xr,yr,f) ; set.seed(25)
-std <- sqrt(noise*var(as.vector(zr))) ; noise <- rnorm(length(zr),0,std)
-Z <- zr + matrix(noise,sqrt(N),sqrt(N))
-# transpose the data to a column format 
-xc <- rep(xr, sqrt(N)) ; yc <- rep(yr, rep(sqrt(N),sqrt(N)))
-data <- cbind.data.frame(x=xc,y=yc,z=as.vector(Z))
-# fit by thin plate splines (of order 2) ibr
-res.ibr <- ibr(z~x+y,data=data,df=1.1,smoother="tps")
-fit <- matrix(predict(res.ibr,grid),ngrid,ngrid)
-persp(xf, yf, fit ,theta=130,phi=20,expand=0.45,main="Fit",zlab="fit")
-
-\dontrun{
-data(ozone, package = "ibr")
-res.ibr <- ibr(Ozone~.,data=ozone,df=1.1)
-summary(res.ibr)
-predict(res.ibr)}
-}
 
 \keyword{smooth}
 \keyword{multivariate}
