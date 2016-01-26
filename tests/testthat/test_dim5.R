@@ -51,16 +51,9 @@ test_that("modelling results with DS splines default df", {
 })
 ## LOWRANK DS
 res2 <- ibr(y~x1+x2+x3+x4+x5,data=don,smoother="lrds",rank=40)
-pres2 <- predict(res2,dongrid)
 ## loading data
 load("reslrds.rda")
-load("preslrds.rda")
 test_that("modelling results with lowrank DS splines default df and rank=40", {
-    expect_true(all(abs(res$fitted-res2$fitted)<1e-08))
-    expect_true(all(abs(res$iter-res2$iter)<1e-08))
-    expect_true(all(abs(res$initialdf-res2$initialdf)<1e-08))
-    expect_true(all(abs(res$finaldf-res2$finaldf)<1e-08))
-    expect_true(all(abs(res$bandwidth-res2$bandwidth)<1e-08))
-    expect_true(all(abs(res$criteria-res2$criteria)<1e-03))
-    expect_true(all(abs(pres-pres2)<1e-08))
+    expect_true(all(abs(res$fitted-res2$fitted)<1e-06))
+    expect_true(all(abs(res$iter-res2$iter)<1e-06))
 })
