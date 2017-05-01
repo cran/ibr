@@ -72,6 +72,10 @@ to a smoother with a df bigger than \code{ddlmaxi}.}
 bias estimation for multivariate regression smoothers.
 \emph{ESAIM: Probability and Statistics}, \emph{18}, 483-502.
 
+  Cornillon, P.-A.; Hengartner, N. and Matzner-Lober, E. (2017)
+  Iterative Bias Reduction Multivariate Smoothing in R: The ibr Package.
+\emph{Journal of Statistical Software}, \emph{77}, 1--26.
+
 Duchon, J. (1977) Splines minimizing rotation-invariant semi-norms in
 Solobev spaces. in W. Shemp and K. Zeller (eds) \emph{Construction theory of
   functions of several variables}, 85-100, Springer, Berlin.

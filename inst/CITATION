@@ -1,0 +1,25 @@
+bibentry(bibtype = "Article",
+  title        = "Iterative Bias Reduction Multivariate Smoothing in {R}: The {ibr} Package",
+  author       = c(person(given = "Pierre-Andr\\'e",
+                          family = "Cornillon",
+                          email = "pierre-andre.cornillon@univ-rennes2.fr"),
+                   person(given = "Nicolas",
+                          family = "Hengartner"),
+                   person(given = "Eric",
+                          family = "Matzner-L{\\o}ber",
+                          email = "eric.matzner@univ-rennes2.fr")),
+  journal      = "Journal of Statistical Software",
+  year         = "2017",
+  volume       = "77",
+  number       = "9",
+  pages        = "1--26",
+  doi          = "10.18637/jss.v077.i09",
+
+  header       = "To cite ibr in publications use:",
+  textVersion  =
+  paste("Pierre-Andre Cornillon, Nicolas Hengartner, Eric Matzner-Lober (2017).",
+        "Iterative Bias Reduction Multivariate Smoothing in R: The ibr Package.",
+        "Journal of Statistical Software, 77(9), 1-26.",
+        "doi:10.18637/jss.v077.i09")
+)
+

@@ -7,13 +7,22 @@ summary.ibr <- function(object, criteria="call", ...) {
   stderr <- sqrt(n*sum(r^2)/(n-object$finaldf))
   if (any(criteria=="call")) {
       criteria <- object$parcall$criterion
-      if (criteria=="user") {
+      if (any(criteria=="user")) {
           anscrit <- NULL
       } else  {
-          anscrit <- object$allcriteria
-          names(anscrit) <- criteria
+          if (object$parcall$exhaustive) {
+              anscrit <- object$criteria
+              } else {
+                  anscrit <- object$allcriteria
+                  names(anscrit) <- criteria
+              }
       }
-    itercrit <- object$alliter
+      if (object$parcall$exhaustive) {
+          itercrit <- object$iter
+      } else {
+          itercrit <- object$alliter
+      }
+                
   } else {
     crit <-c("aic","aicc","gcv","bic","gmdl")
     if (all(!(criteria%in%crit))) stop(paste("criteria are:",crit,"\n"))

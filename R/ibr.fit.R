@@ -166,13 +166,15 @@ ibr.fit <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",ke
         if (contr.sp$exhaustive) {
           choixkautre <- iterchoiceAcve(x,y,bx,df,kernel,ddlmini,cv$ntest,cv$ntrain,cv$Kfold,cv$type,cv$npermut,cv$seed,Kmin,Kmax)
           iterautre <- (Kmin:Kmax)[unlist(lapply(choixkautre,FUN=which.min))]
-          iter <- switch(contr.sp$criterion,strict=iterautre[1],
+          names(iterautre) <- c("rmse","map")
+          iter <- switch(contr.sp$criterion,strict=iterautre[criterion[1]],
                  aggregation=contr.sp$aggregfun(iterautre),
-                 recalc= { Kmax2 <- contr.sp$aggregfun(iterautre) ; iterautre[1] <- (Kmin:Kmax2)[which.min(choixkautre[[1]])] ; iterautre[1]})
+                 recalc= { Kmax2 <- contr.sp$aggregfun(iterautre) ; iterautre[1] <- (Kmin:Kmax2)[which.min(choixkautre[[ criterion[1] ]])] ; iterautre[criterion[1]]})
           if (contr.sp$criterion=="aggregation") {
             choixk <- NA
           } else {
-            choixk <- switch(criterion[1],aic=choixkautre$aic[iter],aicc=choixkautre$aicc[iter],gcv=choixkautre$gcv[iter],bic=choixkautre$bic[iter],gmdl=choixkautre$gmdl[iter])
+              choixk <- switch(criterion[1],aic=choixkautre$aic[iter],aicc=choixkautre$aicc[iter],gcv=choixkautre$gcv[iter],bic=choixkautre$bic[iter],gmdl=choixkautre$gmdl[iter])
+               names(choixk) <- criterion[1]
           }
 #          iter <- iterautre[1]
 #          allcrit <- switch(criterion,rmse=choixk$rmse,map=choixk$map)
@@ -181,20 +183,24 @@ ibr.fit <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",ke
           prov <- iterchoiceAcv(x,y,bx,df,kernel,ddlmini,cv$ntest,cv$ntrain,cv$Kfold,cv$type,cv$npermut,cv$seed,Kmin,Kmax,criterion,contr.sp$fraction)
           iter <- prov$iter
           choixk <- prov$objective
+          names(choixk) <- criterion[1]          
          if (criterion=="rmse") choixk <- sqrt(choixk)
         }
       } else {
         if (contr.sp$exhaustive) {
           choixkautre <- iterchoiceAe(y,Kmin:Kmax,eigenvaluesA,tPADmdemiY,DdemiPA,ddlmini,contr.sp$dfmaxi)
-          iterautre <- (Kmin:Kmax)[unlist(lapply(choixkautre[c("aic","aicc","gcv","bic","gmdl")],FUN=which.min))]
-          iter <- switch(contr.sp$criterion,strict=iterautre[1],
+            iterautre <- (Kmin:Kmax)[unlist(lapply(choixkautre[c("aic","aicc","gcv","bic","gmdl")],FUN=which.min))]
+            names(iterautre) <- c("aic","aicc","gcv","bic","gmdl")
+          iter <- switch(contr.sp$criterion,strict=iterautre[ criterion[1] ],
                  aggregation=contr.sp$aggregfun(iterautre),
-                 recalc= { Kmax2 <- contr.sp$aggregfun(iterautre) ; iterautre[1] <- (Kmin:Kmax2)[which.min(choixkautre[[1]])] ; iterautre[1] })
+                 recalc= { Kmax2 <- contr.sp$aggregfun(iterautre) ; iterautre[criterion[1]] <- (Kmin:Kmax2)[ which.min(choixkautre[[ criterion[1] ]])] ; iterautre[criterion[1]] })
 #          iter <- iterautre[1]
           if (contr.sp$criterion=="aggregation") {
-            choixk <- NA
+              choixk <- NA
+              names(choixk) <- "aggregation"
           } else {
-            choixk <- switch(criterion[1],aic=choixkautre$aic[iter],aicc=choixkautre$aicc[iter],gcv=choixkautre$gcv[iter],bic=choixkautre$bic[iter],gmdl=choixkautre$gmdl[iter])
+              choixk <- switch(criterion[1],aic=choixkautre$aic[iter],aicc=choixkautre$aicc[iter],gcv=choixkautre$gcv[iter],bic=choixkautre$bic[iter],gmdl=choixkautre$gmdl[iter])
+              names(choixk) <- criterion[1]
           }
 #          allcrit <- switch(criterion[1],aic=choixk$aic,aicc=choixk$aicc,gcv=choixk$gcv,bic=choixk$bic,gmdl=choixk$gmdl)
 #          iter <- (Kmin:Kmax)[which.min(allcrit)]
@@ -202,6 +208,7 @@ ibr.fit <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",ke
           prov <- iterchoiceA(n,Kmin,Kmax,eigenvaluesA,tPADmdemiY,DdemiPA,ddlmini,contr.sp$dfmaxi,y,criterion[1],contr.sp$fraction)
           iter <- prov$iter
           choixk <- prov$objective
+          names(choixk) <- criterion[1]
           iterautre <- iter
           choixkautre <- prov$objective
           if (length(criterion)>1) {
@@ -213,6 +220,7 @@ ibr.fit <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",ke
             iter <- switch(contr.sp$criterion,strict=iterautre[1],
                            aggregation={
                    choixk <- NA
+                   names(choixk) <- "aggregation"
                    contr.sp$aggregfun(iterautre) }, recalc= {
                      Kmax2 <- contr.sp$aggregfun(iterautre)
                      prov <- iterchoiceA(n,Kmin,Kmax2,eigenvaluesA,tPADmdemiY,DdemiPA,ddlmini,contr.sp$dfmaxi,y,criterion[1],contr.sp$fraction)
@@ -294,6 +302,7 @@ ibr.fit <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",ke
 #          iter <- iterautre[1]
           if (contr.sp$criterion=="aggregation") {
             choixk <- NA
+            names(choixk) <- "aggregation"
           } else {
             choixk <- switch(criterion[1],aic=choixkautre$aic[iter],aicc=choixkautre$aicc[iter],gcv=choixkautre$gcv[iter],bic=choixkautre$bic[iter],gmdl=choixkautre$gmdl[iter])
           }
@@ -305,8 +314,9 @@ ibr.fit <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",ke
              } else {
                  prov <- iterchoiceS1cv(x,y,lambda,df,ddlmini,cv$ntest,cv$ntrain,cv$Kfold,cv$type,cv$npermut,cv$seed,Kmin,Kmax,criterion,contr.sp$m,contr.sp$s,contr.sp$fraction)
              }
-          iter <- prov$iter
-          choixk <- prov$objective
+            iter <- prov$iter
+            choixk <- prov$objective
+            names(choixk) <- criterion[1]
           if (criterion=="rmse") choixk <- sqrt(choixk)
         }
       } else {
@@ -318,6 +328,7 @@ ibr.fit <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",ke
                  recalc= { Kmax2 <- contr.sp$aggregfun(iterautre) ; iterautre[1] <- (Kmin:Kmax2)[which.min(choixkautre[[1]])] ; iterautre[1]})
           if (contr.sp$criterion=="aggregation") {
             choixk <- NA
+               names(choixk) <- "aggregation"
           } else {
             choixk <- switch(criterion[1],aic=choixkautre$aic[iter],aicc=choixkautre$aicc[iter],gcv=choixkautre$gcv[iter],bic=choixkautre$bic[iter],gmdl=choixkautre$gmdl[iter])
           }
@@ -327,6 +338,7 @@ ibr.fit <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",ke
           prov <- iterchoiceS1(n,Kmin,Kmax,tUy,eigenvaluesS1,ddlmini,contr.sp$dfmaxi,y,criterion[1],contr.sp$fraction)
           iter <- prov$iter
           choixk <- prov$objective
+          names(choixk) <- criterion[1]
           iterautre <- iter
           choixkautre <- prov$objective
           if (length(criterion)>1) {
@@ -364,6 +376,6 @@ ibr.fit <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",ke
     }
     residuals <- y- listefit$fit
 }
-  res <- list(beta=beta,residuals=residuals,fitted=listefit$fit,iter=iter,initialdf=dfstart,finaldf=listefit$trace,bandwidth=bandwidth,call=cl,parcall=list(p=p,m=contr.sp$m,s=contr.sp$s,scaled=contr.sp$scale,mean=moy,sd=ec,critmethod=contr.sp$criterion,rank=rank,criterion=criterion,smoother = smoother, kernel = kernel,smoothobject=smoothobject),criteria=choixk,alliter=iterautre,allcriteria=choixkautre)    
+  res <- list(beta=beta,residuals=residuals,fitted=listefit$fit,iter=iter,initialdf=dfstart,finaldf=listefit$trace,bandwidth=bandwidth,call=cl,parcall=list(p=p,m=contr.sp$m,s=contr.sp$s,scaled=contr.sp$scale,mean=moy,sd=ec,critmethod=contr.sp$criterion,rank=rank,criterion=criterion,smoother = smoother, kernel = kernel,smoothobject=smoothobject,exhaustive=contr.sp$exhaustive),criteria=choixk,alliter=iterautre,allcriteria=choixkautre)    
   return(res)
 }

@@ -212,7 +212,9 @@ Returns an object of class \code{ibr} which is a list including:
     \code{smoother} the chosen smoother,
     \code{kernel} the chosen kernel,
     \code{smoothobject} the smoothobject returned by
-    \link{smoothCon}}
+    \link{smoothCon},
+    \code{exhaustive} a boolean which indicates if an exhaustive
+    search was chosen}
   \item{criteria}{Value
     of the chosen criterion at the given iteration, \code{NA} is
     returned when aggregation of criteria is chosen (see component
@@ -239,14 +241,18 @@ Returns an object of class \code{ibr} which is a list including:
 \references{
   Cornillon, P.-A.; Hengartner, N.; Jegou, N. and Matzner-Lober, E. (2012)
   Iterative bias reduction: a comparative study.
-\emph{Statistics and Computing}, \emph{23}, 777-791.
+  \emph{Statistics and Computing}, \emph{23}, 777-791.
 
   Cornillon, P.-A.; Hengartner, N. and Matzner-Lober, E. (2013)
   Recursive bias estimation for multivariate regression smoothers Recursive 
-bias estimation for multivariate regression smoothers.
-\emph{ESAIM: Probability and Statistics}, \emph{18}, 483-502.
+  bias estimation for multivariate regression smoothers.
+  \emph{ESAIM: Probability and Statistics}, \emph{18}, 483-502.
 
-Wood, S.N. (2003) Thin plate regression
+  Cornillon, P.-A.; Hengartner, N. and Matzner-Lober, E. (2017)
+  Iterative Bias Reduction Multivariate Smoothing in R: The ibr Package.
+  \emph{Journal of Statistical Software}, \emph{77}, 1--26.
+
+  Wood, S.N. (2003) Thin plate regression
   splines. \emph{J. R. Statist. Soc. B}, \emph{65}, 95-114.
 }
 

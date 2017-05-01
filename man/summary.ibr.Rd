@@ -30,6 +30,10 @@ The function \code{summary.ibr} computes and returns a list of summary
   Cornillon, P.-A.; Hengartner, N.; Jegou, N. and Matzner-Lober, E. (2012)
   Iterative bias reduction: a comparative study.
 \emph{Statistics and Computing}. Doi: 10.1007/s11222-012-9346-4
+
+  Cornillon, P.-A.; Hengartner, N. and Matzner-Lober, E. (2017)
+  Iterative Bias Reduction Multivariate Smoothing in R: The ibr Package.
+\emph{Journal of Statistical Software}, \emph{77}, 1--26.
 }
 \seealso{\code{\link{ibr}}, \code{\link{summary.ibr}}}
 

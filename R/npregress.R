@@ -55,8 +55,8 @@ npregress <- function(x,y,criterion="rmse",bandwidth=NULL,kernel="g",control.par
     criterion <- "user"
   }
   nom2 <- paste(nom,kernel,sep="")
-  if (contr.sp$degree==1) {
-    prov <- .C(nom2,as.double(x),as.integer(n),as.double(y),as.double(bandwidth),as.double(x),as.integer(n),double(n),double(1),double(n))
+  if (contr.sp$degree==0) {
+    prov <- .C(nom2,as.double(x),as.integer(n),as.double(y),as.double(bandwidth),as.double(x),as.integer(n),double(n),double(1))
    } else {
    prov <- .C(nom2,as.double(x),as.integer(n),as.double(y),as.double(bandwidth),as.double(x),as.integer(n),double(n),double(1),double(n))
   }

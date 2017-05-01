@@ -31,6 +31,10 @@ Returns the vector of the sums of the first (k+1) terms of the geometric series.
   Recursive bias estimation for multivariate regression smoothers Recursive 
 bias estimation for multivariate regression smoothers.
 \emph{ESAIM: Probability and Statistics}, \emph{18}, 483-502.
+
+  Cornillon, P.-A.; Hengartner, N. and Matzner-Lober, E. (2017)
+  Iterative Bias Reduction Multivariate Smoothing in R: The ibr Package.
+\emph{Journal of Statistical Software}, \emph{77}, 1--26.
 }
 
 \author{Pierre-Andre Cornillon, Nicolas Hengartner and Eric Matzner-Lober.}
