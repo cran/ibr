@@ -21,14 +21,33 @@ predict.npregress <- function(object, newdata, interval= c("none", "confidence",
   ## autre methode
   if (object$call$degree==0) {
     methode <- "reg"
-    nom <- paste(methode,object$call$kernel,sep="")
-    prov <- .C(nom,as.double(x),as.integer(length(x)),as.double(y),as.double(object$bandwidth),as.double(newdata),as.integer(length(newdata)),double(length(newdata)),double(1))
+    if (object$call$kernel=="g") {
+    prov <- .C("regg",as.double(x),as.integer(length(x)),as.double(y),as.double(object$bandwidth),as.double(newdata),as.integer(length(newdata)),double(length(newdata)),double(1))
+    }
+    if (object$call$kernel=="q") {
+    prov <- .C("regq",as.double(x),as.integer(length(x)),as.double(y),as.double(object$bandwidth),as.double(newdata),as.integer(length(newdata)),double(length(newdata)),double(1))
+    }
+    if (object$call$kernel=="e") {
+    prov <- .C("rege",as.double(x),as.integer(length(x)),as.double(y),as.double(object$bandwidth),as.double(newdata),as.integer(length(newdata)),double(length(newdata)),double(1))
+    }
+    if (object$call$kernel=="u") {
+    prov <- .C("regu",as.double(x),as.integer(length(x)),as.double(y),as.double(object$bandwidth),as.double(newdata),as.integer(length(newdata)),double(length(newdata)),double(1))
+    }
     deriv <- FALSE
   }
   if (object$call$degree==1) {
-    methode <- "regpol"
-    nom <- paste(methode,object$call$kernel,sep="")
-    prov <- .C(nom,as.double(x),as.integer(length(x)),as.double(y),as.double(object$bandwidth),as.double(newdata),as.integer(length(newdata)),double(length(newdata)),double(1),double(length(newdata)))
+    if (object$call$kernel=="g") {
+    prov <- .C("regpolg",as.double(x),as.integer(length(x)),as.double(y),as.double(object$bandwidth),as.double(newdata),as.integer(length(newdata)),double(length(newdata)),double(1),double(length(newdata)))
+    }
+    if (object$call$kernel=="q") {
+    prov <- .C("regpolq",as.double(x),as.integer(length(x)),as.double(y),as.double(object$bandwidth),as.double(newdata),as.integer(length(newdata)),double(length(newdata)),double(1),double(length(newdata)))
+    }
+    if (object$call$kernel=="e") {
+    prov <- .C("regpole",as.double(x),as.integer(length(x)),as.double(y),as.double(object$bandwidth),as.double(newdata),as.integer(length(newdata)),double(length(newdata)),double(1),double(length(newdata)))
+    }
+    if (object$call$kernel=="u") {
+    prov <- .C("regpolu",as.double(x),as.integer(length(x)),as.double(y),as.double(object$bandwidth),as.double(newdata),as.integer(length(newdata)),double(length(newdata)),double(1),double(length(newdata)))
+    }
   }
   if (!deriv) {
     Yres <- prov[[7]]

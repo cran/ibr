@@ -1,4 +1,4 @@
-cbf7943aa2967b840e890a0d59fb5e8c *DESCRIPTION
+8270779b2229a15ef0498c03e46aacdd *DESCRIPTION
 bb908d7e5a074973162e84c958d8d1e2 *NAMESPACE
 5835b82dbad08712e0f761b3bbed0d88 *R/AIC.ibr.R
 da3e3cf84e6ccc9e3ce329003376b67e *R/BIC.ibr.R
@@ -32,11 +32,11 @@ be647ac1776304751d589b04c8625db0 *R/kernel.R
 04b5ff26a25f2c7326dd82c3aff009f3 *R/lambdachoice.R
 fc830efd7e152fed8ea16caad3b05839 *R/lambdachoicelr.R
 2d31d2453a15c4c677ef3c074d315a80 *R/lrsmoother.R
-e8c2d0d7e19670540e54dc23b3b9ae64 *R/npregress.R
+353d67e3ccea2b633ccc613e1b2f9cc2 *R/npregress.R
 c704ee3e5b1f3bc1d64c43feb941c03d *R/plot.forwardibr.R
 01d927808e0f3ce40ce7da2efb67dcad *R/plot.ibr.R
 2c16a3972876ed21ff359159c4b575c3 *R/predict.ibr.R
-9a7594d9111e1a36e48418cbea254990 *R/predict.npregress.R
+e961ce90b2b57b86be247a41613eb126 *R/predict.npregress.R
 7154c561213321f3aac6296ffbc901b2 *R/print.ibr.R
 c18336d4fae5355d81c062ab84f34cb6 *R/print.npregress.R
 ba06ea4434f8ff7d10095969443b790b *R/print.summary.ibr.R
@@ -96,7 +96,7 @@ c518225b7333485ee7cb1b9439484a92 *man/summary.ibr.Rd
 9eba24536f7c92322d4b317cd6c17486 *man/sumvalpr.Rd
 8b9ea85fbd384f5810e302640cc5aded *man/tracekernel.Rd
 2a6f9e9e044a78154d3cfda5936d6f48 *src/Makevars
-c699ba47b422b8d8d3c49d7c257b66c2 *src/dssplines.c
+b7310131cd05bca64f86e1c149ca5b8c *src/dssplines.c
 b3292ba57139f7bb90104523170a1c4f *src/ibr.c
 67cce0d2b253ad194bcf233a6b2f2ade *src/ibr_init.c
 484e859824049525abd3186ac09e7a14 *src/polynomlocaux.c

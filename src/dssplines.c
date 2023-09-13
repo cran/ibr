@@ -1,8 +1,8 @@
 #include <float.h> /* DBL_EPSILON */
 #include <math.h>
 #include <R.h>
+#include <R_ext/BLAS.h> /* Blas dcopy_ */
 #include <R_ext/Linpack.h>	/* Fortran routines */
-
 /* Copyright (C) pac@univ-rennes2.fr
 
    This program is free software; you can redistribute it and/or
