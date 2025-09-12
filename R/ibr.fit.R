@@ -135,7 +135,7 @@ ibr.fit <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",ke
               if (ddlmaximum>0) break else dfmaxi <- dfmaxi+0.2
             }
             if (abs(ddlmaximum-dfobjectif)>0.1) {
-              res <- uniroot(departnoyau,c(dfmini,dfmaxi),tol=contr.sp$accuracy,x=x,kernel=kernel,dftobwitmax=contr.sp$dftobwitmax,n=n,p=p,dfobjectif)
+              res <- stats::uniroot(departnoyau,c(dfmini,dfmaxi),tol=contr.sp$accuracy,x=x,kernel=kernel,dftobwitmax=contr.sp$dftobwitmax,n=n,p=p,dfobjectif)
               df <- res$root
             } else df <- dfmaxi
           } else df <- dfmini

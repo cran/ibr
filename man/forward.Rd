@@ -56,7 +56,7 @@ forward(formula,data,subset,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,
 
 \item{rank}{Numeric value that control the rank of low rank splines
   (denoted as \code{k} in mgcv package ; see also \link[mgcv]{choose.k}
-  for further details or \link{gam} for another smoothing approach with
+  for further details or \link[mgcv:gam]{mgcv::gam} for another smoothing approach with
   reduced rank smoother.}
 
 \item{control.par}{a named list that control optional parameters. The
@@ -89,12 +89,12 @@ forward(formula,data,subset,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,
   
 \code{dftobwitmax}: When bandwidth is chosen by specifying the degree
   of freedom (see \code{df}) a search is done by
-  \code{\link{uniroot}}. This argument specifies the maximum number of iterations transmitted to \code{\link{uniroot}} function.
+  \code{\link[stats:uniroot]{stats::uniroot}}. This argument specifies the maximum number of iterations transmitted to \code{\link[stats:uniroot]{stats::uniroot}} function.
   
    \code{exhaustive}: boolean, if \code{TRUE} an exhaustive search of
   optimal number of iteration on the
   grid \code{Kmin:Kmax} is performed. If \code{FALSE} the minimum  of
-  criterion is searched using \code{\link{optimize}} between \code{Kmin}
+  criterion is searched using \code{\link[stats:optimize]{stats::optimize}} between \code{Kmin}
   and \code{Kmax}.
   
   \code{m}: the order of thin plate splines. This integer \emph{m} must verifies

@@ -29,7 +29,7 @@ lrsmoother(x,bs,listvarx,lambda,m,s,rank)
  \item{rank}{The rank of lowrank splines.}
  }
 \details{see the reference for detailed explanation of the matrix matrix
-  R^{-1}U (see reference) and \link{smoothCon} for the definition of smoothobject}
+  \eqn{R^{-1}U}{R^{-1}U} (see reference) and \link[mgcv:smoothCon]{mgcv::smoothCon} for the definition of smoothobject}
  
 \references{
 Duchon, J. (1977) Splines minimizing rotation-invariant semi-norms in

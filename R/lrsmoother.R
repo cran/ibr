@@ -6,7 +6,7 @@ lrsmoother <- function(x,bs,listvarx,lambda,m,s,rank) {
         objet <- list(term=colnames(x),bs.dim=rank,fixed=FALSE,dim=ncol(x),p.order=c(m,s),by="NA",label=paste("s(",paste(listvarx,collapse=","),")",sep=""),xt=NULL,id=NULL,sp=NULL)
         attr(objet,"class") <- "ds.smooth.spec"       
     }
-    sm <- smoothCon(objet,data=data.frame(x),knots=NULL)[[1]]
+    sm <- mgcv::smoothCon(objet,data=data.frame(x),knots=NULL)[[1]]
     Xlr <- sm$X
     Slr <- sm$S[[1]]
     qrx <- qr(Xlr)

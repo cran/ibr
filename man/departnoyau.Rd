@@ -26,7 +26,7 @@ departnoyau(df, x, kernel, dftobwitmax, n, p, dfobjectif)
     (\code{"g"}), Epanechnikov (\code{"e"}), uniform (\code{"u"}),
     quartic (\code{"q"}).}
   \item{dftobwitmax}{Specifies the maximum number of iterations
-    transmitted   to \code{\link{uniroot}} function.}
+    transmitted   to \code{\link[stats:uniroot]{stats::uniroot}} function.}
   \item{n}{Number of rows of data matrix \emph{x}.}
   \item{p}{Number of columns of data matrix \emph{x}.}
   \item{dfobjectif}{A numeric vector of length 1 which indicates

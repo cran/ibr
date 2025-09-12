@@ -34,7 +34,7 @@ bwchoice <- function(X,objectif,kernelx="g",itermax=1000) {
         depart <- depart*2
       }
     }
-    res[j] <- uniroot(choixddlparvar,interval=c(depart,1e-10),X=X[,j],objectif=objectif[j],maxiter=itermax,kernelx=kernelx)$root
+    res[j] <- stats::uniroot(choixddlparvar,interval=c(depart,1e-10),X=X[,j],objectif=objectif[j],maxiter=itermax,kernelx=kernelx)$root
   }
   return(res)
 }

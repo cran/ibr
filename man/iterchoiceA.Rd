@@ -14,7 +14,7 @@
 which calculates the chosen
 \code{criterion} (\code{critAgcv}, \code{critAaic}, \code{critAbic},
 \code{critAaicc} or \code{critAgmdl})  with respect to its first
-argument (a given iteration \code{k}) using \code{\link{optimize}}. This function is not
+argument (a given iteration \code{k}) using \code{\link[stats:optimize]{stats::optimize}}. This function is not
 intended to be used directly.  }
 
 \usage{
@@ -43,7 +43,7 @@ ddlmini, ddlmaxi, y, criterion, fraction)}
 \details{See the reference for detailed explanation of \emph{A} and
   \emph{D}. The interval [\code{mini},\code{maxi}] is splitted into
   subintervals using \code{fraction}. In each subinterval the function
-  \code{fcriterion} is minimzed  using \code{\link{optimize}} (with respect
+  \code{fcriterion} is minimzed  using \code{\link[stats:optimize]{stats::optimize}} (with respect
      to its first argument) and the minimum (and its argument) of the
   result of these optimizations is returned.}
 

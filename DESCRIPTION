@@ -1,14 +1,20 @@
 Package: ibr
-Version: 2.0-4
-Date: 2023-09-12
+Version: 2.0-5
+Date: 2025-09-12
 Title: Iterative Bias Reduction
-Author: Pierre-Andre Cornillon, Nicolas Hengartner, Eric Matzner-Lober
-Maintainer: "Pierre-Andre Cornillon" <pierre-andre.cornillon@univ-rennes2.fr>
+Authors@R: c(person("Pierre-Andre", "Cornillon", role = c("aut", "cre"),
+                     email = "pierre-andre.cornillon@univ-rennes2.fr"),
+              person("Nicolas", "Hengartner", role = "aut"),
+              person("Eric", "Matzner-Lober", role = "aut"))
 Depends: R (>= 2.11.1), mgcv
 Imports: stats, graphics
 Description: Multivariate smoothing using iterative bias reduction with kernel, thin plate splines, Duchon splines or low rank splines. 
 License: GPL (>= 2)
 NeedsCompilation: yes
-Packaged: 2023-09-13 09:28:01 UTC; pac
+Packaged: 2025-09-12 09:41:25 UTC; pac
+Author: Pierre-Andre Cornillon [aut, cre],
+  Nicolas Hengartner [aut],
+  Eric Matzner-Lober [aut]
+Maintainer: Pierre-Andre Cornillon <pierre-andre.cornillon@univ-rennes2.fr>
 Repository: CRAN
-Date/Publication: 2023-09-13 15:00:02 UTC
+Date/Publication: 2025-09-12 10:10:02 UTC

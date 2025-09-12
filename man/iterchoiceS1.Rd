@@ -14,7 +14,7 @@ The function \code{iterchoiceS1} searches the interval from \code{mini} to
      \code{maxi} for a minimum of the function which calculates the chosen
 \code{criterion} (\code{critS1gcv}, \code{critS1aic}, \code{critS1bic},
 \code{critS1aicc} or \code{critS1gmdl})  with respect to its first
-argument (a given iteration \code{k}) using \code{\link{optimize}}. This function is not intended to be used directly.
+argument (a given iteration \code{k}) using \code{\link[stats:optimize]{stats::optimize}}. This function is not intended to be used directly.
 }
 
 \usage{
@@ -41,7 +41,7 @@ y, criterion, fraction)}
 
 \details{The interval [\code{mini},\code{maxi}] is splitted into
   subintervals using \code{fraction}. In each subinterval the function
-  \code{fcriterion} is minimzed  using \code{\link{optimize}} (with respect
+  \code{fcriterion} is minimzed  using \code{\link[stats:optimize]{stats::optimize}} (with respect
      to its first argument) and the minimum (and its argument) of the
   result of these optimizations is returned.}
 

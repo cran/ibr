@@ -24,7 +24,7 @@ iterchoiceA <- function(n,mini,maxi,eigenvaluesA,tPADmdemiY,DdemiPA,ddlmini,ddlm
     }
     fraction <- c(fraction[1:(dep-1)],bb)
     for (i in 1:(length(fraction)-1)) {
-      res1 <- optimize(critAgmdl,lower=fraction[i],upper=fraction[i+1],tol=0.5,valpr=eigenvaluesA,tPADmdemiY=tPADmdemiY,DdemiPA=DdemiPA,n=n,ddlmini=ddlmini,ddlmaxi=ddlmaxi,Y=y)
+      res1 <- stats::optimize(critAgmdl,lower=fraction[i],upper=fraction[i+1],tol=0.5,valpr=eigenvaluesA,tPADmdemiY=tPADmdemiY,DdemiPA=DdemiPA,n=n,ddlmini=ddlmini,ddlmaxi=ddlmaxi,Y=y)
       if (res1$objective<res$objective) res <- res1
     }          
   } else {
@@ -52,7 +52,7 @@ iterchoiceA <- function(n,mini,maxi,eigenvaluesA,tPADmdemiY,DdemiPA,ddlmini,ddlm
     }
     fraction <- c(fraction[1:(dep-1)],bb)
     for (i in 1:(length(fraction)-1)) {
-      res1 <- optimize(fcriterion,lower=fraction[i],upper=fraction[i+1],tol=0.5,valpr=eigenvaluesA,tPADmdemiY=tPADmdemiY,DdemiPA=DdemiPA,n=n,ddlmini=ddlmini,ddlmaxi=ddlmaxi)
+      res1 <- stats::optimize(fcriterion,lower=fraction[i],upper=fraction[i+1],tol=0.5,valpr=eigenvaluesA,tPADmdemiY=tPADmdemiY,DdemiPA=DdemiPA,n=n,ddlmini=ddlmini,ddlmaxi=ddlmaxi)
       if (res1$objective<res$objective) res <- res1
     }
   }

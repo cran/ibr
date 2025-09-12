@@ -183,7 +183,7 @@ iterchoiceAcv <- function(X,y,bx,df,kernelx,ddlmini,ntest,ntrain,Kfold,type,nper
       }
       fraction <- c(fraction[1:(dep-1)],bb)
       for (i in 1:(length(fraction)-1)) {
-        res1 <- optimize(choixssecv2,lower=fraction[i],upper=fraction[i+1],tol=0.5,sel=sel,SSx=SSx,y=y,valpr=valpr,tPADmdemiY=tPADmdemiY,DdemiPA=DdemiPA,ddlmin=ddlmin,index0=index0)
+        res1 <- stats::optimize(choixssecv2,lower=fraction[i],upper=fraction[i+1],tol=0.5,sel=sel,SSx=SSx,y=y,valpr=valpr,tPADmdemiY=tPADmdemiY,DdemiPA=DdemiPA,ddlmin=ddlmin,index0=index0)
         if (res1$objective<res$objective) res <- res1
       }
     } else {
@@ -207,7 +207,7 @@ iterchoiceAcv <- function(X,y,bx,df,kernelx,ddlmini,ntest,ntrain,Kfold,type,nper
       }
       fraction <- c(fraction[1:(dep-1)],bb)
       for (i in 1:(length(fraction)-1)) {
-        res1 <- optimize(choixsapcv2,lower=fraction[i],upper=fraction[i+1],tol=0.5,sel=sel,SSx=SSx,y=y,valpr=valpr,tPADmdemiY=tPADmdemiY,DdemiPA=DdemiPA,ddlmin=ddlmin,index0=index0)
+        res1 <- stats::optimize(choixsapcv2,lower=fraction[i],upper=fraction[i+1],tol=0.5,sel=sel,SSx=SSx,y=y,valpr=valpr,tPADmdemiY=tPADmdemiY,DdemiPA=DdemiPA,ddlmin=ddlmin,index0=index0)
         if (res1$objective<res$objective) res <- res1
       }
     }

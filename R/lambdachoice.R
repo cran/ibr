@@ -25,6 +25,6 @@ lambdachoice <- function(X,ddlobjectif,m=2,s=0,itermax,smoother="tps") {
          if (tr > ddlobjectif) break
         l2 <- l2/4
     }
-    resultat <- uniroot(trace,c(log(l2),log(l1)),vp1=vp,maxiter =itermax)
+    resultat <- stats::uniroot(trace,c(log(l2),log(l1)),vp1=vp,maxiter =itermax)
     return(exp(resultat$root))
 }

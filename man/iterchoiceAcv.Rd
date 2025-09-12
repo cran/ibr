@@ -7,7 +7,7 @@
 \description{
 The function \code{iterchoiceAcv} searches the interval from \code{mini} to
      \code{maxi} for a minimum of the function \code{criterion} with respect
-     to its first argument using \code{\link{optimize}}. This function is not intended to be used directly.
+     to its first argument using \code{\link[stats:optimize]{stats::optimize}}. This function is not intended to be used directly.
 }
 
 \usage{

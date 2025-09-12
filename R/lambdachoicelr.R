@@ -10,7 +10,7 @@ lambdachoicelr <- function(x,ddlobjectif,m=2,s=0,rank,itermax,bs,listvarx) {
         objet <- list(term=colnames(x),bs.dim=rank,fixed=FALSE,dim=ncol(x),p.order=c(m,s),by="NA",label=paste("s(",paste(listvarx,collapse=","),")",sep=""),xt=NULL,id=NULL,sp=NULL)
         attr(objet,"class") <- "ds.smooth.spec"       
     }
-  sm <- smoothCon(objet,data=data.frame(x),knots=NULL)[[1]]
+  sm <- mgcv::smoothCon(objet,data=data.frame(x),knots=NULL)[[1]]
     Xlr <- sm$X
     Slr <- sm$S[[1]]
     qrx <- qr(Xlr)
@@ -32,6 +32,6 @@ lambdachoicelr <- function(x,ddlobjectif,m=2,s=0,rank,itermax,bs,listvarx) {
          if (tr > ddlobjectif) break
         l2 <- l2/4
     }
-    resultat <- uniroot(trace,c(log(l2),log(l1)),vp1=vp,maxiter =itermax)
+    resultat <- stats::uniroot(trace,c(log(l2),log(l1)),vp1=vp,maxiter =itermax)
     return(exp(resultat$root))
 }

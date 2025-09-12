@@ -61,7 +61,7 @@ ibr(formula, data, subset, criterion="gcv", df=1.5, Kmin=1, Kmax=1e+06, smoother
   quartic (\code{"q"}). The default (gaussian kernel) is strongly advised.}
 \item{rank}{Numeric value that control the rank of low rank splines
   (denoted as \code{k} in mgcv package ; see also \link[mgcv]{choose.k}
-  for further details or \link{gam} for another smoothing approach with
+  for further details or \link[mgcv:gam]{mgcv::gam} for another smoothing approach with
   reduced rank smoother.}
 
 \item{control.par}{A named list that control optional parameters. The
@@ -99,14 +99,14 @@ ibr(formula, data, subset, criterion="gcv", df=1.5, Kmin=1, Kmax=1e+06, smoother
 \code{dftobwitmax}: When bandwidth is chosen by specifying the effective
   degree
   of freedom (see \code{df}) a search is done by
-  \code{\link{uniroot}}. This argument specifies the maximum number of iterations transmitted to \code{\link{uniroot}} function.
+  \code{\link[stats:uniroot]{stats::uniroot}}. This argument specifies the maximum number of iterations transmitted to \code{\link[stats:uniroot]{stats::uniroot}} function.
   
    \code{exhaustive}: boolean, if \code{TRUE} an exhaustive search of
   optimal number of iteration on the grid \code{Kmin:Kmax} is
   performed. All criteria for all iterations in the same class (class
   one: GCV, AIC, corrected AIC, BIC, gMDL ; class two : MAP, RMSE) are
   returned in argument \code{allcrit}. If \code{FALSE} the minimum of
-  criterion is searched using \code{\link{optimize}} between \code{Kmin}
+  criterion is searched using \code{\link[stats:optimize]{stats::optimize}} between \code{Kmin}
   and \code{Kmax}.
   
   \code{m}: The order of derivatives for the penalty (for thin plate
@@ -212,7 +212,7 @@ Returns an object of class \code{ibr} which is a list including:
     \code{smoother} the chosen smoother,
     \code{kernel} the chosen kernel,
     \code{smoothobject} the smoothobject returned by
-    \link{smoothCon},
+    \link[mgcv:smoothCon]{mgcv::smoothCon},
     \code{exhaustive} a boolean which indicates if an exhaustive
     search was chosen}
   \item{criteria}{Value
@@ -256,7 +256,7 @@ Returns an object of class \code{ibr} which is a list including:
   splines. \emph{J. R. Statist. Soc. B}, \emph{65}, 95-114.
 }
 
-\seealso{\code{\link{predict.ibr}}, \code{\link{summary.ibr}}, \link[mgcv]{gam}}
+\seealso{\code{\link{predict.ibr}}, \code{\link{summary.ibr}}, \link[mgcv:gam]{mgcv::gam}}
 
 \examples{
 f <- function(x, y) { .75*exp(-((9*x-2)^2 + (9*y-2)^2)/4) +

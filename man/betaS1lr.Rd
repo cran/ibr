@@ -25,7 +25,7 @@ betaS1lr(n,U,tUy,eigenvaluesS1,ddlmini,k,lambda,rank,Rm1U,index0)
  \item{lambda}{The smoothness coefficient lambda for thin plate splines of
   order \code{m}.}
  \item{rank}{The rank of lowrank splines.}
- \item{Rm1U}{matrix R^{-1}U (see reference).}
+ \item{Rm1U}{matrix \eqn{R^{-1}U}{R^{-1}U} (see reference).}
   \item{index0}{The index of the first eigen values of \emph{S}
   numerically equal to 0.}
  }
