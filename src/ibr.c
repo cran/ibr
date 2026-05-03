@@ -75,6 +75,7 @@
  */
 #include <R.h>
 #include <Rinternals.h>
+#include "kernel.h"
 static double * vector(int nch)
 {
     double *m;
@@ -85,7 +86,7 @@ static double * vector(int nch)
 
 
 /* Trace noyau gaussien */
-static double caltrgauss(double bw, double *x, int *nx, double *objectif, int colonne, double *sl) 
+static double caltrkernel(double bw, double *x, int *nx, double *objectif, int colonne, double *sl, int typekernel) 
 {
   int j, i; 
   double  tmp, trtmp, trace; 
@@ -95,8 +96,8 @@ static double caltrgauss(double bw, double *x, int *nx, double *objectif, int co
 	sl[i]=0.0;
   }
   for(i = 0; i < *nx; i++) {
-    for (j= i; j < *nx; j++) { 
-      tmp= exp(-0.5*(pow((x[colonne*(*nx)+i]-x[colonne*(*nx)+j])/bw ,2))) /sqrt(2*3.14159265358979);
+    for (j= i; j < *nx; j++) {
+      tmp=poidskernel(x[colonne*(*nx)+i], x[colonne*(*nx)+j], bw, typekernel);
       sl[i]=sl[i]+tmp;
       if (j==i)
 	trtmp= tmp;
@@ -112,13 +113,14 @@ static double caltrgauss(double bw, double *x, int *nx, double *objectif, int co
 
 #define EPSILON DBL_EPSILON
 
-void zerotracegaus(			/* An estimate of the root */
-    double *ax,				/* Left border | of the range	*/
-    double *bx,			/* Right border| the root is seeked*/
-    /*    double *fa, double *fb,		 f(a), f(b) [now calculated] */
-    double *x, int *nx, int *px, double *objectif,    /* Arguments for trace*/
-    double *Tol,			/* Acceptable tolerance		*/
-    int *Maxit, double *bandwidth)				/* Max # of iterations */
+void zerotrace(			/* An estimate of the root */
+               double *ax,				/* Left border | of the range	*/
+               double *bx,			/* Right border| the root is seeked*/
+               /*    double *fa, double *fb,		 f(a), f(b) [now calculated] */
+               double *x, int *nx, int *px, double *objectif,    /* Arguments for trace*/
+               double *Tol,			/* Acceptable tolerance		*/
+               int *Maxit, double *bandwidth, /* Max # of iterations */
+               int typekernel)				
 {
   double a, b, c, fc, fa, fb;			/* Abscissae, descr. see above,  f(c) */
   double tol, *sl;
@@ -129,7 +131,7 @@ void zerotracegaus(			/* An estimate of the root */
       success=0;
       b=*bx;
       a = ax[k];  
-      fa = caltrgauss(a,x,nx,objectif,k,sl);
+      fa = caltrkernel(a,x,nx,objectif,k,sl,typekernel);
       if(fa == 0.0) {
 	bandwidth[k]=a;
 	/*	return a;*/
@@ -138,7 +140,7 @@ void zerotracegaus(			/* An estimate of the root */
       }
       while(fa>0) {
 	a = a * 2;
-	fa = caltrgauss(a,x,nx,objectif,k,sl);
+	fa = caltrkernel(a,x,nx,objectif,k,sl,typekernel);
       }
       if(fa == 0.0) {
 	bandwidth[k]=a;
@@ -147,7 +149,7 @@ void zerotracegaus(			/* An estimate of the root */
 	break;
       }
       
-      fb = caltrgauss(b,x,nx,objectif,k,sl);
+      fb = caltrkernel(b,x,nx,objectif,k,sl,typekernel);
       if(fb ==  0.0) {
 	bandwidth[k]=b;
 	success=1;
@@ -155,7 +157,7 @@ void zerotracegaus(			/* An estimate of the root */
       }
       while(fb<0) {
 	b = b / 2;
-	fb = caltrgauss(b,x,nx,objectif,k,sl);
+	fb = caltrkernel(b,x,nx,objectif,k,sl,typekernel);
       }
       if(fb ==  0.0) {
 	bandwidth[k]=b;
@@ -231,7 +233,7 @@ void zerotracegaus(			/* An estimate of the root */
 		new_step = -tol_act;
 	}
 	a = b;	fa = fb;			/* Save the previous approx. */
-	b += new_step;	fb = caltrgauss(b,x,nx,objectif,k,sl);	/* Do step to a new approxim. */
+	b += new_step;	fb = caltrkernel(b,x,nx,objectif,k,sl,typekernel);	/* Do step to a new approxim. */
 	if( (fb > 0 && fc > 0) || (fb < 0 && fc < 0) ) {
 	    /* Adjust c for it to have a sign opposite to that of b */
 	    c = a;  fc = fa;
@@ -251,7 +253,7 @@ void zerotracegaus(			/* An estimate of the root */
 void evaltracetotal(double *x, int *nx, int *px,
 			     double *ax, double *bx, double *objectifuni,
 		     double *Tol, int *Maxit, double *objectif, 
-		     double *resubw, double *trtot, double *sl) /*results */	
+		            double *resubw, double *trtot, double *sl, int typekernel) /*results */	
 {
   double a, b, c, fc, fa, fb;			/* Abscissae, descr. see above,  f(c) */
   double tol;
@@ -260,8 +262,8 @@ void evaltracetotal(double *x, int *nx, int *px,
       b=bx[k];
       success=0;
       a = ax[k];
-      fb = caltrgauss(b,x,nx,objectifuni,k,sl);
-      fa = caltrgauss(a,x,nx,objectifuni,k,sl);
+      fb = caltrkernel(b,x,nx,objectifuni,k,sl,typekernel);
+      fa = caltrkernel(a,x,nx,objectifuni,k,sl,typekernel);
       maxit = *Maxit+ 1; tol = *Tol;
       if(fa == 0.0) {
 	resubw[k]=a;
@@ -271,7 +273,7 @@ void evaltracetotal(double *x, int *nx, int *px,
     }
       while(fa>0) {
 	a = a * 2;
-	fa = caltrgauss(a,x,nx,objectifuni,k,sl);
+	fa = caltrkernel(a,x,nx,objectifuni,k,sl,typekernel);
       }
 
     if(fb ==  0.0) {
@@ -282,7 +284,7 @@ void evaltracetotal(double *x, int *nx, int *px,
 
       while(fb<0) {
 	b = b / 2;
-	fb = caltrgauss(b,x,nx,objectifuni,k,sl);
+	fb = caltrkernel(b,x,nx,objectifuni,k,sl,typekernel);
       }
       /* depart */
       c = a;   fc = fa;
@@ -352,7 +354,7 @@ void evaltracetotal(double *x, int *nx, int *px,
 	}
 	a = b;	fa = fb;			/* Save the previous approx. */
 	b += new_step;	
-	fb = caltrgauss(b,x,nx,objectifuni,k,sl);/* Do step to a new approxim. */
+	fb = caltrkernel(b,x,nx,objectifuni,k,sl, typekernel);/* Do step to a new approxim. */
 	if( (fb > 0 && fc > 0) || (fb < 0 && fc < 0) ) {
 	    /* Adjust c for it to have a sign opposite to that of b */
 	    c = a;  fc = fa;
@@ -376,7 +378,7 @@ void evaltracetotal(double *x, int *nx, int *px,
     for (j= i; j < *nx; j++) {
       tmp=1.0;
       for (k=0; k< *px;k++) {
-	tmp= tmp*exp(-0.5*(pow((x[k*(*nx)+i]-x[k*(*nx)+j])/resubw[k] ,2))) /sqrt(2*3.14159265358979);
+	    tmp= tmp*poidskernel(x[k*(*nx)+i], x[k*(*nx)+j], resubw[k], typekernel);
       }
       sl[i]=sl[i]+tmp;
       if (j==i)
@@ -395,15 +397,16 @@ void evaltracetotal(double *x, int *nx, int *px,
 /*************************************************************************/
 /*************************************************************************/
 
-void zerotracegaustotal(double *ax, 
-    /* les fenetres etroites et resultats 1ere coord. inutile*/
-    double *bx,	/* les fenetres large 1ere coord. inutile*/
-    double *x, int *nx, int *px, /* Donnes */
-			/*    double *objectifuni,   objectif univarie*/
-			double *Tol,  /* Acceptable tolerance*/
-			int *Maxit, /* Max  of iterations*/ 
-			double *objectif, /*objectif trace totale*/
-			double *output)/*output*/
+void zerotracetotal(double *ax, 
+                    /* les fenetres etroites et resultats 1ere coord. inutile*/
+                    double *bx,	/* les fenetres large 1ere coord. inutile*/
+                    double *x, int *nx, int *px, /* Donnes */
+			        /*    double *objectifuni,   objectif univarie*/
+			        double *Tol,  /* Acceptable tolerance*/
+			        int *Maxit, /* Max  of iterations*/ 
+			        double *objectif, /*objectif trace totale*/
+			        double *output, /*output*/
+                    int typekernel)
 {
   double a, b, c, fc, fa, fb;	/* Abscissae, descr. see above,  f(c) */
   double tol,tmp, *sl ,trtot, fpx;
@@ -417,7 +420,7 @@ void zerotracegaustotal(double *ax,
     k=0;
     a=pow(*objectif,1.0/fpx);
     /*evaluation de l'objectif */
-    evaltracetotal(x,nx,px,ax,bx,&a,Tol,Maxit,objectif,output,&trtot,sl);
+    evaltracetotal(x,nx,px,ax,bx,&a,Tol,Maxit,objectif,output,&trtot,sl, typekernel);
     fa = trtot;
     if(fa ==  0.0) {
       *Maxit=0;
@@ -429,7 +432,7 @@ void zerotracegaustotal(double *ax,
 	ax[k]=output[k];
       }
       b=pow(*objectif,2.0/fpx);
-      evaltracetotal(x,nx,px,ax,bx,&b,Tol,Maxit,objectif,output,&trtot,sl);
+      evaltracetotal(x,nx,px,ax,bx,&b,Tol,Maxit,objectif,output,&trtot,sl, typekernel);
       fb = trtot;
       if(fb ==  0.0) {
 	*Maxit=0;
@@ -439,7 +442,7 @@ void zerotracegaustotal(double *ax,
 	/* grande trace (grand objectif), fenetre petite */
 	b=*objectif; 
 	evaltracetotal(x,nx,px,ax,bx,&b,Tol,Maxit,objectif,
-		       output,&trtot,sl);
+		           output,&trtot,sl, typekernel);
 	fb = trtot;
 	if(fb ==  0.0) {
 	  *Maxit=0;
@@ -448,7 +451,7 @@ void zerotracegaustotal(double *ax,
 	if (fb<0.0) {
 	  b=*nx-2; 
 	  evaltracetotal(x,nx,px,ax,bx,&b,Tol,Maxit,objectif,
-			 output,&trtot,sl);
+			         output,&trtot,sl, typekernel);
 	  fb = trtot;
 	  if(fb ==  0.0) {
 	    *Maxit=0;
@@ -474,7 +477,7 @@ void zerotracegaustotal(double *ax,
 	bx[k]=output[k];
       }
       a=pow(*objectif,1.0/(2*fpx));
-      evaltracetotal(x,nx,px,ax,bx,&a,Tol,Maxit,objectif,output,&trtot,sl);
+      evaltracetotal(x,nx,px,ax,bx,&a,Tol,Maxit,objectif,output,&trtot,sl, typekernel);
       fa = trtot;
       if(fa ==  0.0) {
 	*Maxit=0;
@@ -482,8 +485,8 @@ void zerotracegaustotal(double *ax,
       }     
       if (fa > 0) {
 	k=0;
-	a=caltrgauss(ax[k],x,nx,&tmp,k,sl);
-	evaltracetotal(x,nx,px,ax,bx,&a,Tol,Maxit,objectif,output,&trtot,sl);
+	a=caltrkernel(ax[k],x,nx,&tmp,k,sl,typekernel);
+	evaltracetotal(x,nx,px,ax,bx,&a,Tol,Maxit,objectif,output,&trtot,sl,typekernel);
 	fa = trtot;
 	if(fa ==  0.0) {
 	  *Maxit=0;
@@ -494,8 +497,8 @@ void zerotracegaustotal(double *ax,
 	    ax[k]=4*ax[k];
 	  }
 	  k=0;
-	  a=caltrgauss(ax[k],x,nx,&tmp,k,sl);
-	  evaltracetotal(x,nx,px,ax,bx,&a,Tol,Maxit,objectif,output,&trtot,sl);
+	  a=caltrkernel(ax[k],x,nx,&tmp,k,sl,typekernel);
+	  evaltracetotal(x,nx,px,ax,bx,&a,Tol,Maxit,objectif,output,&trtot,sl,typekernel);
 	  fa = trtot;
 	  if(fa ==  0.0) {
 	    *Maxit=0;
@@ -580,7 +583,7 @@ void zerotracegaustotal(double *ax,
 	}
 	a = b;	fa = fb;			/* Save the previous approx. */
 	b += new_step;
-	evaltracetotal(x,nx,px,ax,bx,&b,Tol,Maxit,objectif,output,&trtot,sl);
+	evaltracetotal(x,nx,px,ax,bx,&b,Tol,Maxit,objectif,output,&trtot,sl,typekernel);
 	fb = trtot;
 	if (fb<0) {
 	  /* sauvegarde borne etc */
@@ -610,49 +613,55 @@ void zerotracegaustotal(double *ax,
 /*************************************************************************/
 /*************************************************************************/
 
-void gaustotal(double *ax, 
-    /* les fenetres etroites et resultats 1ere coord. inutile*/
-	       double *bx,	/* les fenetres large 1ere coord. inutile*/
-	       double *x, int *nx, int *px, /* Donnes */
-	       double *Tol,  /* Acceptable tolerance*/
-	       int *Maxit, /* Max  of iterations*/ 
-	       double *objectif, int *dftotal,/*objectif trace totale*/
-	       double *K, double *Ddemi,/*output*/
-               double *dfstart, double *bandwidth )
+SEXP choosebw(SEXP rax, /* les fenetres etroites et resultats 1ere coord. inutile*/
+	           SEXP rbx,	/* les fenetres large 1ere coord. inutile*/
+	           SEXP rx, /* Data */
+               SEXP rparamsdouble,
+               SEXP rparamsint
+               ) 
 {
-  int j, i, k; 
-  double   trtmp, trace; 
-  trtmp=0.0;
-  if (*dftotal==1) {
-    zerotracegaustotal(ax,bx,x,nx,px,Tol,Maxit,objectif,bandwidth);
+  int nx, px, Maxit, dftotal, typekernel, *paramsint; 
+  double *bandwidth, Tol, objectif, *paramsdouble, *ax, *bx, *x;
+  SEXP rbandwidth;
+  x=REAL(rx);
+  ax=REAL(rax);
+  bx=REAL(rbx);
+  /* rparamsdouble
+     - Acceptable tolerance
+     - total trace objective
+   */
+  paramsdouble =  REAL(rparamsdouble);
+  Tol=paramsdouble[0];
+  objectif=paramsdouble[1];
+  /* rparamsint
+     - nx number of observations
+     - px number of variables
+     - Max  of iterations
+     - dftotal (if one then objective is total df)
+     - typekernel (1=gaussian, 2=epanechnikov, 3=quadratic, 4=uniform)
+   */
+  paramsint = INTEGER(rparamsint);
+  nx=paramsint[0];
+  px=paramsint[1];
+  Maxit=paramsint[2];
+  dftotal=paramsint[3];
+  typekernel=paramsint[4];
+  /* ---------- output ------------  */
+  /* bandwidth (vector of double of length px: bandwidth for each col/variable)
+   */
+  rbandwidth = PROTECT(Rf_allocVector(REALSXP, px));
+  bandwidth = REAL(rbandwidth);
+
+  if (dftotal==1) {
+    zerotracetotal(ax,bx,x,&nx,&px,&Tol,&Maxit,&objectif,bandwidth,typekernel);
   } 
   else {
-    zerotracegaus(ax,bx,x,nx,px,objectif,Tol,Maxit,bandwidth);
+    zerotrace(ax,bx,x,&nx,&px,&objectif,&Tol,&Maxit,bandwidth,typekernel);
   }
-  /* les fenetres sont dans bandwidth */
-  trace=0.0;
-  for(i = 0; i < *nx; i++) {
-    for (j= i; j < *nx; j++) { 
-      K[((*nx)*j)+i]= 1.0;
-      for (k=0; k< *px;k++) {
-	K[((*nx)*j)+i]= K[((*nx)*j)+i]*exp(-0.5*(pow((x[k*(*nx)+i]-x[k*(*nx)+j])/bandwidth[k] ,2))) /sqrt(2*3.14159265358979);
-      }
-      K[((*nx)*i)+j]=K[((*nx)*j)+i];
-      Ddemi[i]=Ddemi[i]+K[((*nx)*j)+i];
-      if (j==i)
-	trtmp= K[((*nx)*j)+i];
-      else 
-	Ddemi[j]=K[((*nx)*j)+i]+Ddemi[j];
-    }
-    trace=trace+trtmp/Ddemi[i];
-    Ddemi[i]=1/sqrt(Ddemi[i]);
+  if ( Maxit== (-1)) {
+	Rf_error("Error: failed to find appropriate bandwidth. Try to increase dftobwitmax argument of control.par list ?");
   }
-  *dfstart=trace;
-  for(i = 0; i < *nx; i++) {
-    for (j= i; j < *nx; j++) { 
-      K[((*nx)*j)+i]=K[((*nx)*j)+i]*Ddemi[i]*Ddemi[j];
-      K[((*nx)*i)+j]=K[((*nx)*j)+i];
-    }
-  }
-  return ;
+  /* result */
+  UNPROTECT(1); 
+  return rbandwidth;
 }

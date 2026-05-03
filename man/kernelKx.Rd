@@ -1,14 +1,14 @@
-\name{kernelSx}
+\name{kernelKx}
 
-\alias{kernelSx}
+\alias{kernelKx}
 
 \title{Evaluates the smoothing matrix at x*}
 
-\description{The function evaluates the matrix (kernel) smoothing 
-  matrix at arbitrary locations \emph{x*}.}
+\description{The function evaluates the kernel matrix 
+  at arbitrary locations \emph{x*}.}
 
 \usage{
-kernelSx(X,Xetoile=NULL,bx,kernelx="g")
+kernelKx(X,Xetoile=NULL,bx,kernelx="g")
 }
 
 \arguments{
@@ -23,15 +23,14 @@ kernelSx(X,Xetoile=NULL,bx,kernelx="g")
 }
 
 \value{
-Returns the matrix \eqn{Sx} which \eqn{i,j} entry is equal to
-\deqn{\frac{\prod_{k=1}^p K((x_{ik}^*-x_{jk})/h_k)}{\sum_{j=1}^n \prod_{k=1}^p K((x_{ik}^*-x_{jk})/h_k)}} where \eqn{K(.)} is the
+Returns the matrix \eqn{Kx} which \eqn{i,j} entry is equal to
+\deqn{\prod_{k=1}^p K((x_{ik}^*-x_{jk})/h_k)} where \eqn{K(.)} is the
 chosen kernel.
 }
 
 \author{Pierre-Andre Cornillon, Nicolas Hengartner  and Eric Matzner-Lober.}
 
-\seealso{\code{\link{kernelKx}}, \code{\link{ibr}}}
+\seealso{\code{\link{kernelSx}}, \code{\link{ibr}}}
 
 
 \keyword{smooth}
-

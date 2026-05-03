@@ -14,7 +14,7 @@ Missing values are not allowed.
 
 \usage{
 ibr(formula, data, subset, criterion="gcv", df=1.5, Kmin=1, Kmax=1e+06, smoother="k",
- kernel="g", rank=NULL, control.par=list(), cv.options=list())}
+ kernel="g", method="eigen", rank=NULL, control.par=list(), cv.options=list())}
 
 \arguments{
   \item{formula}{An object of class \code{"\link{formula}"} (or one that
@@ -59,6 +59,11 @@ ibr(formula, data, subset, criterion="gcv", df=1.5, Kmin=1, Kmax=1e+06, smoother
 \item{kernel}{Character string which allows to choose between gaussian kernel
   (\code{"g"}), Epanechnikov (\code{"e"}), uniform (\code{"u"}),
   quartic (\code{"q"}). The default (gaussian kernel) is strongly advised.}
+\item{method}{Character string which allows to choose between methods/algorithms
+  for ibr: \code{"eigen"} diagonalize the smoother matrix (advised for
+  \emph{n}<5000),  \code{"product"} reduce bias iteratively smoothing
+  the residuals \emph{r}
+  using product  \emph{Sr}.}
 \item{rank}{Numeric value that control the rank of low rank splines
   (denoted as \code{k} in mgcv package ; see also \link[mgcv]{choose.k}
   for further details or \link[mgcv:gam]{mgcv::gam} for another smoothing approach with
@@ -73,7 +78,7 @@ ibr(formula, data, subset, criterion="gcv", df=1.5, Kmin=1, Kmax=1e+06, smoother
   0.01), \code{ddlmaxi} (default to 2n/3), \code{fraction} (default
   to \code{c(100, 200, 500, 1000, 5000, 10^4, 5e+04, 1e+05, 5e+05,
     1e+06)}), \code{scale} (default to \code{FALSE}),
-  \code{criterion} (default to \code{"strict"}) and
+  \code{aggregcrit} (default to \code{"no"}) and
   \code{aggregfun} (default to 10^(floor(log10(x[2]))+2)).
 
   \code{bandwidth}: a vector of either length 1 or length equal to the
@@ -94,7 +99,7 @@ ibr(formula, data, subset, criterion="gcv", df=1.5, Kmin=1, Kmax=1e+06, smoother
   the search grid (integer from \code{Kmin} to \code{Kmax}) to minimize the \code{criterion}.
  
   \code{really.big}: a boolean: if \code{TRUE} it overides the limitation
-  at 500 observations. Expect long computation times if \code{TRUE}.
+  at 5000 observations. Expect long computation times if \code{TRUE}.
   
 \code{dftobwitmax}: When bandwidth is chosen by specifying the effective
   degree

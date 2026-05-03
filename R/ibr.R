@@ -1,4 +1,4 @@
-ibr <- function(formula,data,subset,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",kernel="g",rank=NULL,control.par=list(),cv.options=list()) {
+ibr <- function(formula,data,subset,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",kernel="g",method="eigen",rank=NULL,control.par=list(),cv.options=list()) {
     cl <- match.call() 
     mf <- match.call()
     m <- match(c("formula", "data", "subset"), names(mf), 0L)
@@ -16,7 +16,7 @@ ibr <- function(formula,data,subset,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smo
     y <- model.response(mf, "numeric")
     x <- model.matrix(mt, mf)
     attributes(x) <- attributes(x)[c("dim","dimnames")]
-    res <- ibr.fit(x,y,criterion,df,Kmin,Kmax,smoother,kernel,rank,control.par,cv.options)
+    res <- ibr.fit(x,y,criterion,df,Kmin,Kmax,smoother,kernel,method,rank,control.par,cv.options)
     res$call <- cl
     res$terms <- mt
     class(res) <- c("ibr", "list")

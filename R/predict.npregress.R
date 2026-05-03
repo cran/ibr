@@ -18,41 +18,21 @@ predict.npregress <- function(object, newdata, interval= c("none", "confidence",
     }
     if (!is.numeric(newdata)) stop("newdata must be a numeric vector (or a data-frame with first column of numeric type)\n")
   }
+  kern <- c("g", "e", "q", "u")
+  kernelint <- which(object$call$kernel==kern)
   ## autre methode
   if (object$call$degree==0) {
     methode <- "reg"
-    if (object$call$kernel=="g") {
-    prov <- .C("regg",as.double(x),as.integer(length(x)),as.double(y),as.double(object$bandwidth),as.double(newdata),as.integer(length(newdata)),double(length(newdata)),double(1))
-    }
-    if (object$call$kernel=="q") {
-    prov <- .C("regq",as.double(x),as.integer(length(x)),as.double(y),as.double(object$bandwidth),as.double(newdata),as.integer(length(newdata)),double(length(newdata)),double(1))
-    }
-    if (object$call$kernel=="e") {
-    prov <- .C("rege",as.double(x),as.integer(length(x)),as.double(y),as.double(object$bandwidth),as.double(newdata),as.integer(length(newdata)),double(length(newdata)),double(1))
-    }
-    if (object$call$kernel=="u") {
-    prov <- .C("regu",as.double(x),as.integer(length(x)),as.double(y),as.double(object$bandwidth),as.double(newdata),as.integer(length(newdata)),double(length(newdata)),double(1))
-    }
+    prov <- .Call(ibr_npreg,as.double(x),as.double(y),as.double(newdata),as.double(object$bandwidth),as.integer(kernelint))
     deriv <- FALSE
   }
   if (object$call$degree==1) {
-    if (object$call$kernel=="g") {
-    prov <- .C("regpolg",as.double(x),as.integer(length(x)),as.double(y),as.double(object$bandwidth),as.double(newdata),as.integer(length(newdata)),double(length(newdata)),double(1),double(length(newdata)))
-    }
-    if (object$call$kernel=="q") {
-    prov <- .C("regpolq",as.double(x),as.integer(length(x)),as.double(y),as.double(object$bandwidth),as.double(newdata),as.integer(length(newdata)),double(length(newdata)),double(1),double(length(newdata)))
-    }
-    if (object$call$kernel=="e") {
-    prov <- .C("regpole",as.double(x),as.integer(length(x)),as.double(y),as.double(object$bandwidth),as.double(newdata),as.integer(length(newdata)),double(length(newdata)),double(1),double(length(newdata)))
-    }
-    if (object$call$kernel=="u") {
-    prov <- .C("regpolu",as.double(x),as.integer(length(x)),as.double(y),as.double(object$bandwidth),as.double(newdata),as.integer(length(newdata)),double(length(newdata)),double(1),double(length(newdata)))
-    }
+    prov <- .Call(ibr_npregpol,as.double(x),as.double(y),as.double(newdata),as.double(object$bandwidth),as.integer(kernelint))
   }
   if (!deriv) {
-    Yres <- prov[[7]]
+    Yres <- prov[[1]]
   } else {
-    Yres <- list(yhat=prov[[7]],deriv=prov[[9]])  
+    Yres <- list(yhat=prov[[1]],deriv=prov[[2]])  
   }
   if (object$call$degree>1) stop("Not implemented. Please consider using KernSmooth or another library for degree greater or equal to 2\n")
   return(Yres)

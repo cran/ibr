@@ -91,11 +91,17 @@ z <- f(x)
 sigma2 <- 0.05*var(z)
 erreur <- rnorm(n,0,sqrt(sigma2))
 y <- z+erreur
+# given bandwidth (default Gaussian kernel)
 res <- npregress(x,y,bandwidth=0.02)
 summary(res)
 ord <- order(x)
 plot(x,y)
 lines(x[ord],predict(res)[ord])
+# local polynomial of degree 1 (default Gaussian kernel)
+# bandwidth chosen with RMSE on 5-fold cross-validation
+res <- npregress(x,y,bandwidth=0.02, control.par=list(degree=1),
+                 cv.options=list(Kfold=5))
+summary(res)
 }
 
 \keyword{smooth}

@@ -12,9 +12,9 @@ dssmoother <- function(X,Y=NULL,lambda,m,s) {
     cgu <- as.vector(Sp%*%Y)/(-lambda)
     dgu <- solve(qr.R(qrSgu))%*%(t(qr.Q(qrSgu))%*%(as.matrix(Y)-Qgu%*%cgu))
     diag(Sp) <- rep(1,n)+diag(Sp)
-    return(list(H=Sp,Sgu=Sgu,Qgu=Qgu,dgu=dgu,cgu=cgu))
+    return(list(S=Sp,Sgu=Sgu,Qgu=Qgu,dgu=dgu,cgu=cgu))
   }  else {
     diag(Sp) <- rep(1,n)+diag(Sp)
-    return(list(H=Sp,Sgu=Sgu,Qgu=Qgu,dgu=NULL,cgu=NULL))
+    return(list(S=Sp,Sgu=Sgu,Qgu=Qgu,dgu=NULL,cgu=NULL))
   }
 }

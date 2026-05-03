@@ -5,8 +5,8 @@
 \title{Evaluate the smoothing matrix, the radial basis matrix, the
   polynomial matrix and their associated coefficients}
 
-\description{The function evaluates the smoothing matrix \code{H}, the
-  matrices \emph{Q} and \emph{S} and their associated
+\description{The function evaluates the smoothing matrix \code{S}, the
+  matrices \emph{Qgu} and \emph{Sgu} and their associated
   coefficients \code{c} and \code{s}. This function is not intended to be used directly.}
 
 \usage{
@@ -29,9 +29,9 @@ dssmoother(X,Y=NULL,lambda,m,s)
   verify 2\emph{m}+2\emph{s}/\emph{d}. To get pseudo-cubic splines,
   choose \emph{m}=2 and \emph{s}=(\emph{d}-1)/2 (See Duchon, 1977).} 
  }
-\details{see the reference for detailed explanation of \emph{Q} (the
+\details{see the reference for detailed explanation of \emph{Qgu} (the
   semi kernel or radial basis) and
-  \emph{S} (the polynomial null space).}
+  \emph{Sgu} (the polynomial null space).}
  
 \references{
 Duchon, J. (1977) Splines minimizing rotation-invariant semi-norms in

@@ -1,6 +1,7 @@
 npregress <- function(x,y,criterion="rmse",bandwidth=NULL,kernel="g",control.par=list(),cv.options=list()) {
-  kern <- c("g","q","e","u")
+  kern <- c("g", "e", "q", "u")
   kernel <- match.arg(kernel,kern)
+  kernelint <- which(kernel==kern)
   if (any(is.na(x))) stop("NA's in x\n")
   if (any(is.na(y))) stop("NA's in y\n")
   if (!is.numeric(x)&(is.data.frame(x))) {
@@ -44,37 +45,14 @@ npregress <- function(x,y,criterion="rmse",bandwidth=NULL,kernel="g",control.par
     nj <- unlist(lapply(sel,length))
     effold <- c(0,cumsum(nj))
     neffold <- length(sel)
-    # kern <- c("g","q","e","u")
-    if ((kernel=="g")&(nom=="regpol"))  {
-       prov <- .C("regpolgcv",as.double(xord),as.integer(length(xord)),as.double(yord),as.double(gridbw),as.integer(length(gridbw)),as.integer(effold),as.integer(neffold),double(length(gridbw)),double(length(gridbw)))
-       }
-    if ((kernel=="g")&(nom=="reg"))  {
-       prov <- .C("reggcv",as.double(xord),as.integer(length(xord)),as.double(yord),as.double(gridbw),as.integer(length(gridbw)),as.integer(effold),as.integer(neffold),double(length(gridbw)),double(length(gridbw)))
-       }
-    ##
-    if ((kernel=="q")&(nom=="regpol"))  {
-       prov <- .C("regpolqcv",as.double(xord),as.integer(length(xord)),as.double(yord),as.double(gridbw),as.integer(length(gridbw)),as.integer(effold),as.integer(neffold),double(length(gridbw)),double(length(gridbw)))
-       }
-    if ((kernel=="q")&(nom=="reg"))  {
-       prov <- .C("regqcv",as.double(xord),as.integer(length(xord)),as.double(yord),as.double(gridbw),as.integer(length(gridbw)),as.integer(effold),as.integer(neffold),double(length(gridbw)),double(length(gridbw)))
-       }
-    ##
-    if ((kernel=="e")&(nom=="regpol"))  {
-       prov <- .C("regpolecv",as.double(xord),as.integer(length(xord)),as.double(yord),as.double(gridbw),as.integer(length(gridbw)),as.integer(effold),as.integer(neffold),double(length(gridbw)),double(length(gridbw)))
-       }
-    if ((kernel=="e")&(nom=="reg"))  {
-       prov <- .C("regecv",as.double(xord),as.integer(length(xord)),as.double(yord),as.double(gridbw),as.integer(length(gridbw)),as.integer(effold),as.integer(neffold),double(length(gridbw)),double(length(gridbw)))
-       }
-    ##
-    if ((kernel=="u")&(nom=="regpol"))  {
-       prov <- .C("regpolucv",as.double(xord),as.integer(length(xord)),as.double(yord),as.double(gridbw),as.integer(length(gridbw)),as.integer(effold),as.integer(neffold),double(length(gridbw)),double(length(gridbw)))
-       }
-    if ((kernel=="u")&(nom=="reg"))  {
-       prov <- .C("regucv",as.double(xord),as.integer(length(xord)),as.double(yord),as.double(gridbw),as.integer(length(gridbw)),as.integer(effold),as.integer(neffold),double(length(gridbw)),double(length(gridbw)))
-       }
+    if (nom=="regpol")  {
+       prov <- .Call(ibr_npregpolcv, as.double(xord), as.double(yord),as.double(gridbw),as.integer(effold),as.integer(kernelint))
+    } else if (nom=="reg")  {
+       prov <- .Call(ibr_npregcv, as.double(xord), as.double(yord),as.double(gridbw),as.integer(effold),as.integer(kernelint))
+    }
     ################
-    rmse <- sqrt(prov[[8]]/sum(n-nj))
-    map <- prov[[9]]/sum(n-nj)
+    rmse <- sqrt(prov[[1]]/sum(n-nj))
+    map <- prov[[2]]/sum(n-nj)
     choixbw <- list(gridbw=gridbw,rmse=rmse,map=map)
     bandwidth <- gridbw[switch(criterion,rmse=which.min(rmse),map=which.min(map))]
   } else {
@@ -82,42 +60,12 @@ npregress <- function(x,y,criterion="rmse",bandwidth=NULL,kernel="g",control.par
     criterion <- "user"
   }
   if (contr.sp$degree==0) {
-    # kern <- c("g","q","e","u")
-    if (kernel=="g") {
-      prov <- .C("regg",as.double(x),as.integer(n),as.double(y),as.double(bandwidth),as.double(x),as.integer(n),double(n),double(1))
+      prov <- .Call(ibr_npreg, as.double(x), as.double(y), as.double(x), as.double(bandwidth),as.integer(kernelint))
+    } else {
+      prov <- .Call(ibr_npregpol, as.double(x), as.double(y), as.double(x), as.double(bandwidth),as.integer(kernelint))
     }
-    ##
-    if (kernel=="q") {
-    prov <- .C("regq",as.double(x),as.integer(n),as.double(y),as.double(bandwidth),as.double(x),as.integer(n),double(n),double(1))
-    }
-    ##
-    if (kernel=="e") {
-    prov <- .C("rege",as.double(x),as.integer(n),as.double(y),as.double(bandwidth),as.double(x),as.integer(n),double(n),double(1))
-    }
-    ##
-    if (kernel=="u") {
-    prov <- .C("regu",as.double(x),as.integer(n),as.double(y),as.double(bandwidth),as.double(x),as.integer(n),double(n),double(1))
-    }
-  } else {
-    # kern <- c("g","q","e","u")
-    if (kernel=="g") {
-   prov <- .C("regpolg",as.double(x),as.integer(n),as.double(y),as.double(bandwidth),as.double(x),as.integer(n),double(n),double(1),double(n))
-    }
-    ##
-    if (kernel=="q") {
-   prov <- .C("regpolq",as.double(x),as.integer(n),as.double(y),as.double(bandwidth),as.double(x),as.integer(n),double(n),double(1),double(n))
-    }
-    ##
-    if (kernel=="e") {
-   prov <- .C("regpole",as.double(x),as.integer(n),as.double(y),as.double(bandwidth),as.double(x),as.integer(n),double(n),double(1),double(n))
-    }
-    ##
-    if (kernel=="u") {
-   prov <- .C("regpolu",as.double(x),as.integer(n),as.double(y),as.double(bandwidth),as.double(x),as.integer(n),double(n),double(1),double(n))
-     }
- }
-  fit <- prov[[7]]
-  df <- prov[[8]]
+  fit <- prov[[1]]
+  df <- prov[[2]]
   residuals <- y- fit
   
   res <- list(bandwidth=bandwidth,residuals=residuals,fitted=fit,df=df,call=list(x=x,y=y,criterion=criterion,kernel=kernel,degree=contr.sp$degree),criteria=choixbw)

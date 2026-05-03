@@ -26,7 +26,7 @@ predict.ibr <- function(object, newdata, interval= c("none", "confidence", "pred
         x <- scale(x,center=object$parcall$mean,scale=object$parcall$sd)
     }
     if (object$parcall$smoother=="k") {
-      SSx <- kernelSx(kernelx=object$parcall$kernel,X=x,bx=object$bandwidth,newdata)
+      SSx <- kernelSx(X=x,newdata,bx=object$bandwidth,kernelx=object$parcall$kernel)
       Yres <- as.vector(SSx%*%object$beta)
     }
     if ((object$parcall$smoother=="ds")|(object$parcall$smoother=="tps")) {
