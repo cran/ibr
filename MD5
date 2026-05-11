@@ -1,4 +1,4 @@
-9a9f168bed7821b37d4405600b9502bd *DESCRIPTION
+2f65da3a0234d9acbb8fda5d714b2c86 *DESCRIPTION
 96c89b1f2af7a6dca811988ada26597b *NAMESPACE
 5835b82dbad08712e0f761b3bbed0d88 *R/AIC.ibr.R
 da3e3cf84e6ccc9e3ce329003376b67e *R/BIC.ibr.R
@@ -44,7 +44,6 @@ e2fa1a6b35743463c9691fde1b725d89 *R/print.summary.npregress.R
 817f4fde2be90d7117a3f5c241dc394e *R/residuals.ibr.R
 5b570b3c8f1752feb9bcec351dfd107f *R/summary.ibr.R
 b585266a8562a90de4c1c0a5f8a5a32c *R/summary.npregress.R
-23161c7eb305fec411df18388de0d35c *README
 fbf459bb206cc7ecc87a70bb0d11ba09 *data/ozone.rda
 5398ca7d7ef88a2668999b4cccb8fad3 *inst/CITATION
 cb8495b054ea21d0c5fde51934a9e445 *man/AIC.ibr.Rd
@@ -107,5 +106,5 @@ f7841513e6d1894b2972e112e0e6370f *src/polynomlocaux.h
 067649f4e7ed5b8650e28c626b4d5bdb *src/product.h
 56c5796bc1e45193275dcc5ca6599c29 *src/regression.c
 5f4fb79ab1cadabffd56aaa7f4e64d74 *src/regression.h
-094bd6da4e5d6abec74920ea8db6f200 *src/smoother.c
+39e4b6d921bdc1657caaccf45402e2da *src/smoother.c
 1a4af10de0ffee0ef72ad6a685f97e20 *src/smoother.h

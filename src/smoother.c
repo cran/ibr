@@ -33,6 +33,7 @@ SEXP Kmatrix(SEXP rx, /* Data */
   /* ---------- output ------------  */
   /* rK: matrix of double K (nvalx x nx)
    */
+  if (symmetric==1) nvalx=nx;
   rK = PROTECT(Rf_allocMatrix(REALSXP, nvalx, nx));
   K=REAL(rK);
   /* case symmetric x=valx */
