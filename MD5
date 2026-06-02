@@ -1,4 +1,4 @@
-2f65da3a0234d9acbb8fda5d714b2c86 *DESCRIPTION
+2be244d2c4bc8de1d02cb7bf07b3c2a5 *DESCRIPTION
 96c89b1f2af7a6dca811988ada26597b *NAMESPACE
 5835b82dbad08712e0f761b3bbed0d88 *R/AIC.ibr.R
 da3e3cf84e6ccc9e3ce329003376b67e *R/BIC.ibr.R
@@ -18,7 +18,7 @@ b9ea93388a68b199c141a1c2ca4696e5 *R/dssplines.R
 282dbffc6f48f59fa31f6e911bc23490 *R/fittedS1lr.R
 cf2a4a9fa1bdba8d3dcc7b5ccb0297df *R/forward.R
 36f87913c01376d7c499aefd1fc81a3d *R/ibr.R
-85d026618e2307334535485fd31ce0ef *R/ibr.fit.R
+08ee846e1785faf67431ecc92c69dd85 *R/ibr.fit.R
 87e032fb681469c0e8ede152a0ebc4c1 *R/iterchoiceA.R
 6801722f0e23486c4efab41d705fc33e *R/iterchoiceAcv.R
 f77a3fbda3bd019ac0a202cabc5fb077 *R/iterchoiceAcve.R
@@ -62,10 +62,10 @@ a95339220a636d256311fd07de93da25 *man/dsSx.Rd
 b68f94ffba569df21cbc3e8f13b5f92c *man/fittedA.Rd
 65be95fbbc853fc4be6ce94341b08dab *man/fittedS1.Rd
 a7dfd8a2f71a4ecdb27b31ab9da0efc3 *man/fittedS1lr.Rd
-9089ae9ff0c763a4f57603e3b61c0e81 *man/forward.Rd
+a7beaf97bf4c11a6d78381f4e2ee9069 *man/forward.Rd
 00d13511aa8c319e39e7a7133972a47c *man/ibr-package.Rd
-2502da230d4552c088576751f640b82b *man/ibr.Rd
-778208305123b3811788be25ce44b267 *man/ibr.fit.Rd
+bdf95824e0ca8c46a388f4f3b805ce01 *man/ibr.Rd
+ae1a1f34ca456707469a2116026e6858 *man/ibr.fit.Rd
 2decabe7c4a7421550edef434b761051 *man/iterchoiceA.Rd
 226151736aef1e3e0dde14ab7aef4248 *man/iterchoiceAcv.Rd
 ecc3ef992a4d4143b7da17dbc6587842 *man/iterchoiceAcve.Rd

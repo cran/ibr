@@ -27,12 +27,13 @@ ibr.fit <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",ke
   if (smoother=="k") contr.sp <- list(bandwidth=NULL,iter=NULL,really.big=FALSE,
                                       dftobwitmax=1000,exhaustive=FALSE,m=NULL,s=NULL,dftotal=FALSE,
                                       accuracy=0.01,dfmaxi=2*n/3,fraction=c(100, 200, 500, 1000, 5000,10^4,5e+04,1e+05,5e+05,1e+06),
-                                      scale=FALSE,aggregcrit="no",aggregfun=function(x) {floor(stats::median(x[criterion]))})
+                                      scale=FALSE,aggregcrit="no",aggregfun=function(x) {floor(stats::median(x[criterion]))}, verbose=FALSE)
   else  contr.sp <- list(bandwidth=NULL,iter=NULL,really.big=FALSE,
                          dftobwitmax=1000,exhaustive=FALSE,m=NULL,s=NULL,dftotal=FALSE,
                          accuracy=0.01,dfmaxi=2*n/3,fraction=c(100, 200, 500, 1000, 5000,10^4,5e+04,1e+05,5e+05,1e+06),
-                         scale=TRUE,aggregcrit="no",aggregfun=function(x) {floor(stats::median(x[criterion]))})
+                         scale=TRUE,aggregcrit="no",aggregfun=function(x) {floor(stats::median(x[criterion]))}, verbose=FALSE)
   contr.sp[(names(control.par))] <- control.par
+  if (!(is.logical(contr.sp$verbose))) stop("contr.sp$verbose must be logical\n")
   if (!(is.logical(contr.sp$dftotal))) stop("contr.sp$dftotal must be logical\n")
   if ((!is.null(contr.sp$bandwidth))&(!is.numeric(contr.sp$bandwidth) || any(contr.sp$bandwidth<0))) stop("invalid bandwidth\n")
   if ((!is.null(contr.sp$iter))&(!is.numeric(contr.sp$iter) || (contr.sp$iter<0) || (floor(contr.sp$iter)!=contr.sp$iter))) stop("invalid number of iterations\n")
@@ -103,7 +104,7 @@ ibr.fit <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",ke
     if (!all(sapply(cv[c(2,3,6,8)], FUN=function(x) is.numeric(x)||is.null(x)))) stop("invalid cv parameters: must be numeric or NULL\n")
     if (any(names(cv.options)=="ntrain")) cv$ntest <- NULL
   } else cv <- NULL
-  if (!(lowrank)&&((n>1000)&(! contr.sp$really.big))) stop("number of observations is greater than 1000, set control.par$really.big to TRUE if you really want to do the requested calculations (but computational time -eigen decomposition- could be prohibitive)\n")
+  if (!(lowrank)&&((method=="eigen")&(n>5000)&(! contr.sp$really.big))) stop("number of observations is greater than 1000, set control.par$really.big to TRUE if you really want to do the requested calculations (but computational time -eigen decomposition- could be prohibitive)\n")
   if (smoother=="k") {
     kern <- c("g", "e", "q", "u")
     kernel <- match.arg(kernel,kern)
@@ -119,6 +120,7 @@ ibr.fit <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",ke
     } else {
       if (df<=1) stop("degree of freedom should be greater than 1\n")   
       departbw <- apply(x,2,FUN=function(z) 3*abs(diff(range(z))))
+      if (contr.sp$verbose) print("Choosing bandwidth")
       bandwidth <- .Call(ibr_choosebw,
                          as.double(departbw),
                          if (contr.sp$dftotal) as.double(rep(1e-10,p)) else
@@ -130,6 +132,7 @@ ibr.fit <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",ke
                                       contr.sp$dftotal, kernelint))
                          )
     }
+    if (contr.sp$verbose) print("Smoother Matrices")
     K <- .Call(ibr_Kmatrix, x, 0, bandwidth, as.integer(c(n, p, n, kernelint, 1)))
     listeS <- .Call(ibr_Amatrix, K)
     listeS[[3]] <- sum(diag(K)/listeS[[2]])
@@ -143,7 +146,8 @@ ibr.fit <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",ke
     if (length(df)>1) stop("only one df is possible with Splines\n")
     ddlmini <- choose(contr.sp$m+p-1,contr.sp$m-1)
     if (lowrank) {
-      if (is.null(bandwidth)) {
+     if (contr.sp$verbose) print("LowRank setup and eigen calculations")
+     if (is.null(bandwidth)) {
         lambda <- lambdachoicelr(x,ddlmini*df,m=contr.sp$m,contr.sp$s,rank,itermax=contr.sp$dftobwitmax,bs,listvarx)
         bandwidth <- lambda
       } else {
@@ -179,6 +183,7 @@ ibr.fit <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",ke
       rm(S2)
     } else {
       ## diagonalization
+     if (contr.sp$verbose) print("Eigen calculations")
       listeS.eig <- eigen(listeS$S,symmetric=TRUE)
       eigenvaluesS <- listeS.eig$values
       if (any(eigenvaluesS<(-1e-10))) stop("Some eigenvalues of the Kernel smoother matrix are negative, it will explode")
@@ -202,6 +207,7 @@ ibr.fit <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",ke
       rm(listeS.eig)  
     }
     if (is.null(iter)) {
+     if (contr.sp$verbose) print("Calculating the number of iterations")
       if (Kmax<=Kmin) stop("Kmax hould be greater than Kmin\n")
       if (any(c(Kmin,Kmax)<=0)) stop("Kmin and Kmax should be greater than 0")
       if (all(criterion%in%c("rmse","map"))) {
@@ -339,6 +345,7 @@ ibr.fit <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",ke
       Ddemiy <- y
     }
     if (!is.null(iter)) {
+      if (contr.sp$verbose) print("Product/reccurence until convergence")
       ## prod until iter
       res <- .Call(ibr_product, listeS$S, as.double(Ddemiy), as.integer(iter))
       criterion <- "user"
@@ -418,6 +425,7 @@ ibr.fit <- function(x,y,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,smoother="k",ke
     }
   } # end of product
   ## beta
+  if (contr.sp$verbose) print("Finalizing...")
   if (method=="eigen") {
     if (smoother=="k") {
       beta <- betaA(n,eigenvaluesS,tPADmdemiY,DdemiPA,ddlmini,k=iter,index0)

@@ -85,7 +85,7 @@ forward(formula,data,subset,criterion="gcv",df=1.5,Kmin=1,Kmax=1e+06,
   the search grid (integer from \code{Kmin} to \code{Kmax}) to minimize the \code{criterion}.
  
   \code{really.big}: a boolean: if \code{TRUE} it overides the limitation
-  at 500 observations. Expect long computation times if \code{TRUE}.
+  at 5000 observations. Expect long computation times if \code{TRUE}.
   
 \code{dftobwitmax}: When bandwidth is chosen by specifying the degree
   of freedom (see \code{df}) a search is done by

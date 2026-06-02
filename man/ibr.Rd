@@ -169,7 +169,9 @@ ibr(formula, data, subset, criterion="gcv", df=1.5, Kmin=1, Kmax=1e+06, smoother
 
   \code{aggregfun} function to be applied when
   \code{control.par$criterion} is either \code{recalc} or
-  \code{aggregation}. 
+  \code{aggregation}.
+
+  \code{verbose} boolean for verbose output (default to \code{FALSE}).
 }
 
    \item{cv.options}{A named list which controls the way to do cross
